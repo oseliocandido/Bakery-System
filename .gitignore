@@ -1,0 +1,19 @@
+# Virtual Enviroment
+.venv/
+
+# Enviroment Variables
+*.env
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Logs
+*.log
+
+#App Data
+secrets.toml
+*.db
+
+#vscode
+.tool-versions
+.vscode/

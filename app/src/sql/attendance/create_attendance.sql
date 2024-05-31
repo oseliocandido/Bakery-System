@@ -1,0 +1,1 @@
+INSERT INTO attendance (user_id, date, type, time) VALUES (:user_id, :date, :type, :time);

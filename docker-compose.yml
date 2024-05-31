@@ -1,0 +1,30 @@
+services:
+  streamlit:
+    container_name: bakery-avenida
+    image: oseliocandido/bakery-system:latest
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./logs/:/app/logs/
+      - ./data/data.db:/app/data/data.db
+      - ${HOME}/secrets/:/app/src/.streamlit/
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8501/ || exit 1"]
+      interval: 45s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  backup:
+    container_name: aws-sqlite-bck
+    image: amazon/aws-cli
+    volumes:
+      - ${HOME}/myapp/data:/aws/data
+    env_file:
+      - env/aws.env
+    environment:
+      DAY: ${DAY}
+      MONTH: ${MONTH}
+      YEAR: ${YEAR}
+    entrypoint: ["/bin/sh","-c","aws s3 cp /aws/data/data.db s3://$${AWS_S3_BUCKET_NAME}/${YEAR}/${MONTH}/${DAY}_data.db"]
