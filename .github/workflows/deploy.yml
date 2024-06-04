@@ -36,5 +36,5 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST 'cd ~/myapp/ && docker compose pull'
-          ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST 'cd ~/myapp/ && docker compose up streamlit -d'
+          ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST 'cd ~/myapp/ && docker compose -f docker-compose-production.yml pull'
+          ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST 'cd ~/myapp/ && docker compose -f docker-compose-production.yml up streamlit -d'
