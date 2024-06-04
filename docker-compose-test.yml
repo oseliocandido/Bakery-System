@@ -1,0 +1,13 @@
+services:
+  streamlit-test:
+    container_name: bakery-avenida-test
+    image: oseliocandido/bakery-system:latest
+    environment:
+      - DATABASE_STREAMLIT_PATH=/app/data/test_data.db
+    ports:
+      - "8502:8502"
+    volumes:
+      - ./logs/:/app/logs/
+      - ./data/data.db.example:/app/data/test_data.db
+      - ${HOME}/secrets/:/app/src/.streamlit/
+  
