@@ -54,7 +54,7 @@ add_cron_job() {
 
 
 streamlit_start() {
-  docker compose up streamlit -d --build
+  docker compose -f docker-compose-production.yml up streamlit -d --build
 }
 
 
