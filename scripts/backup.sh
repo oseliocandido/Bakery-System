@@ -6,4 +6,4 @@ export MONTH=$(date +"%m")
 export YEAR=$(date +"%Y")
 
 # Start Backup Service
-docker compose -f $HOME/myapp/docker-compose.yml up backup  >> $HOME/myapp/logs/aws-bck.log
+docker compose -f $HOME/myapp/docker-compose-production.yml up backup  >> $HOME/myapp/logs/aws-bck.log
