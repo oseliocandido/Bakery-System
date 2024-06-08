@@ -40,8 +40,8 @@ git clone https://github.com/oseliocandido/Bakery-System.git ~/myapp && cd ~/mya
 
 3. Open the terminal and run:
 ```bash
-$ chmod +x startup.sh
-$ ./startup.sh
+chmod +x startup.sh
+./startup.sh
 ```
 
 ## 🖼️ Screenshots
