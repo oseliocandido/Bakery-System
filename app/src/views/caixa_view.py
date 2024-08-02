@@ -41,6 +41,7 @@ class CaixaView:
         card_value = st.text_input("💳 Cartão de Crédito", max_chars=7, placeholder="0000,00")
         pix_value = st.text_input("📱PIX", max_chars=7, placeholder="0000,00")
         money_value = st.text_input("💵 Dinheiro", max_chars=7, placeholder="0000,00")
+        period  = st.radio("Período",options=['Dia','Tarde'])
        
         #Defautl Initial State
         card_value_status = "❌"
@@ -52,10 +53,10 @@ class CaixaView:
         is_pix_value_correct = is_money_format_ok(pix_value)
         is_money_value_correct = is_money_format_ok(money_value)
 
-        if not is_card_value_correct:
-            card_value_status = "❌"
-        elif is_card_value_correct:
-            card_value_status = "✅"
+        # if not is_card_value_correct:
+        #     card_value_status = "❌"
+        # elif is_card_value_correct:
+        #     card_value_status = "✅"
 
         if not is_pix_value_correct:
             pix_value_status = "❌"
@@ -99,6 +100,7 @@ class CaixaView:
                 user_id = selected_user.numero_identificacao
                 response = self.caixa_controller.create_closing_balance(user_id,
                                                                          current_date_ymd,
+                                                                         period,
                                                                          card_value.replace(',','.'),
                                                                          pix_value.replace(',','.'),
                                                                          money_value.replace(',','.'), 
@@ -121,12 +123,13 @@ class CaixaView:
             st.error('Senha Incorreta!')
         if is_correct_password:
             date = st.date_input("Data de Fechamento", format='DD/MM/YYYY', min_value=datetime(1960, 1, 1), max_value=(datetime.now())).strftime('%Y-%m-%d')
-            closing_values = self.caixa_controller.get_closing_values(date)
+            period  = st.radio("Período",options=['Dia','Tarde'])
+            closing_values = self.caixa_controller.get_closing_values(date, period)
             if closing_values:
                 card_value = st.text_input("💳 Cartão de Crédito", max_chars=7, placeholder="0000,00",value=f"{closing_values.card_value:.2f}".replace('.', ','))
                 pix_value = st.text_input("📱PIX", max_chars=7, placeholder="0000,00",value=f"{closing_values.pix_value:.2f}".replace('.', ','))
                 money_value = st.text_input("💵 Dinheiro", max_chars=7, placeholder="0000,00",value=f"{closing_values.money_value:.2f}".replace('.', ','))
-
+                
               #Initial State
                 card_value_status = "❌"
                 pix_value_status = "❌"
@@ -180,6 +183,7 @@ class CaixaView:
                 if all(conditions_check):
                     if st.button("Atualizar"):
                         response = self.caixa_controller.update_closing_balance(date, 
+                                                                                period,
                                                                                 card_value.replace(',','.'),
                                                                                 pix_value.replace(',','.'),
                                                                                 money_value.replace(',','.'), 
