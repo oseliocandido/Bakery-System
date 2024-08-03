@@ -38,18 +38,18 @@ class CaixaView:
         active_caixa_users = [user for user in users if user.role  == "Atendente de Caixa" and user.status == 'Ativo']
         selected_user = st.selectbox("Funcionário", options=active_caixa_users, format_func=lambda value: f"{value.complete_name}")
 
-        card_value = st.text_input("💳 Cartão de Crédito", max_chars=7, placeholder="0000,00")
+        #card_value = st.text_input("💳 Cartão de Crédito", max_chars=7, placeholder="0000,00")
         pix_value = st.text_input("📱PIX", max_chars=7, placeholder="0000,00")
         money_value = st.text_input("💵 Dinheiro", max_chars=7, placeholder="0000,00")
         period  = st.radio("Período",options=['Dia','Tarde'])
        
         #Defautl Initial State
-        card_value_status = "❌"
+        #card_value_status = "❌"
         pix_value_status = "❌"
         money_value_status = "❌"
 
         # Validations
-        is_card_value_correct = is_money_format_ok(card_value)
+        #is_card_value_correct = is_money_format_ok(card_value)
         is_pix_value_correct = is_money_format_ok(pix_value)
         is_money_value_correct = is_money_format_ok(money_value)
 
@@ -68,13 +68,13 @@ class CaixaView:
         elif is_money_value_correct:
             money_value_status = "✅"
 
-        col1, aux, col2, aux2, col3 = st.columns([4, 1, 4, 1, 4])
+        col2, aux2, col3 = st.columns([4, 1, 4])
 
-        with col1:
-            if card_value_status == "❌":
-                st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>Cartão {card_value_status}</div>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>Cartão {card_value_status}</div>", unsafe_allow_html=True)
+        # with col1:
+        #     if card_value_status == "❌":
+        #         st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>Cartão {card_value_status}</div>", unsafe_allow_html=True)
+        #     else:
+        #         st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>Cartão {card_value_status}</div>", unsafe_allow_html=True)
 
         with col2:
             if pix_value_status == "❌":
@@ -92,8 +92,7 @@ class CaixaView:
         observation = st.text_area('Observações Adicionais', placeholder="Texto", height=250)
 
         conditions_check = [is_pix_value_correct,
-                            is_money_value_correct,
-                            is_card_value_correct]
+                            is_money_value_correct]
         
         if all(conditions_check):
             if st.button("Registrar"):
@@ -101,7 +100,7 @@ class CaixaView:
                 response = self.caixa_controller.create_closing_balance(user_id,
                                                                          current_date_ymd,
                                                                          period,
-                                                                         card_value.replace(',','.'),
+                                                                         "0.00",
                                                                          pix_value.replace(',','.'),
                                                                          money_value.replace(',','.'), 
                                                                          observation,
@@ -130,7 +129,7 @@ class CaixaView:
                 pix_value = st.text_input("📱PIX", max_chars=7, placeholder="0000,00",value=f"{closing_values.pix_value:.2f}".replace('.', ','))
                 money_value = st.text_input("💵 Dinheiro", max_chars=7, placeholder="0000,00",value=f"{closing_values.money_value:.2f}".replace('.', ','))
                 
-              #Initial State
+                #Initial State
                 card_value_status = "❌"
                 pix_value_status = "❌"
                 money_value_status = "❌"
