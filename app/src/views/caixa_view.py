@@ -39,18 +39,18 @@ class CaixaView:
         selected_user = st.selectbox("Funcionário", options=active_caixa_users, format_func=lambda value: f"{value.complete_name}")
 
         #card_value = st.text_input("💳 Cartão de Crédito", max_chars=7, placeholder="0000,00")
-        pix_value = st.text_input("📱PIX", max_chars=7, placeholder="0000,00")
+        #pix_value = st.text_input("📱PIX", max_chars=7, placeholder="0000,00")
         money_value = st.text_input("💵 Dinheiro", max_chars=7, placeholder="0000,00")
         period  = st.radio("Período",options=['Dia','Tarde'])
        
         #Defautl Initial State
         #card_value_status = "❌"
-        pix_value_status = "❌"
+        #pix_value_status = "❌"
         money_value_status = "❌"
 
         # Validations
         #is_card_value_correct = is_money_format_ok(card_value)
-        is_pix_value_correct = is_money_format_ok(pix_value)
+        #is_pix_value_correct = is_money_format_ok(pix_value)
         is_money_value_correct = is_money_format_ok(money_value)
 
         # if not is_card_value_correct:
@@ -58,17 +58,17 @@ class CaixaView:
         # elif is_card_value_correct:
         #     card_value_status = "✅"
 
-        if not is_pix_value_correct:
-            pix_value_status = "❌"
-        elif is_pix_value_correct:
-            pix_value_status = "✅"
+        # if not is_pix_value_correct:
+        #     pix_value_status = "❌"
+        # elif is_pix_value_correct:
+        #     pix_value_status = "✅"
 
         if not is_money_value_correct:
             money_value_status = "❌"
         elif is_money_value_correct:
             money_value_status = "✅"
 
-        col2, aux2, col3 = st.columns([4, 1, 4])
+        col1 = st.columns(1)[0]
 
         # with col1:
         #     if card_value_status == "❌":
@@ -76,13 +76,13 @@ class CaixaView:
         #     else:
         #         st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>Cartão {card_value_status}</div>", unsafe_allow_html=True)
 
-        with col2:
-            if pix_value_status == "❌":
-                st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>PIX {pix_value_status}</div>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>PIX {pix_value_status}</div>", unsafe_allow_html=True)
+        # with col2:
+        #     if pix_value_status == "❌":
+        #         st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>PIX {pix_value_status}</div>", unsafe_allow_html=True)
+        #     else:
+        #         st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>PIX {pix_value_status}</div>", unsafe_allow_html=True)
 
-        with col3:
+        with col1:
             if money_value_status == "❌":
                 st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>Dinheiro {money_value_status}</div>", unsafe_allow_html=True)
             else:
@@ -91,8 +91,7 @@ class CaixaView:
         st.write('')
         observation = st.text_area('Observações Adicionais', placeholder="Texto", height=250)
 
-        conditions_check = [is_pix_value_correct,
-                            is_money_value_correct]
+        conditions_check = [is_money_value_correct]
         
         if all(conditions_check):
             if st.button("Registrar"):
@@ -101,7 +100,7 @@ class CaixaView:
                                                                          current_date_ymd,
                                                                          period,
                                                                          "0.00",
-                                                                         pix_value.replace(',','.'),
+                                                                         "0.00",
                                                                          money_value.replace(',','.'), 
                                                                          observation,
                                                                          log_call=True)
