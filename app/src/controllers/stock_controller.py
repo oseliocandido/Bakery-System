@@ -57,7 +57,7 @@ class StockController:
                                 SELECT 
                                     s.id AS supplier_id,
                                     s.description,
-                                    sp.initial_price,
+                                    sp.current_price,
                                     CASE WHEN sp.status = 'Ativo' THEN 1 ELSE 0 END AS Status
                                 FROM 
                                     suppliers s 
@@ -79,21 +79,21 @@ class StockController:
     @log_function_calls
     def update_stock_product_association(self, update_dataframe, selected_product_id):
         supplier_ids = update_dataframe["ID"].values.tolist()
-        initial_price = update_dataframe["Preco Inicial"].values.tolist()
+        current_price = update_dataframe["Preco Atual"].values.tolist()
         new_status = update_dataframe["Status"].values.tolist()
 
-        rows_to_update = [(initial_price, supplier_id, selected_product_id) 
-                           for initial_price, supplier_id, status 
-                           in zip(initial_price, supplier_ids, new_status) if not status]
-        rows_to_insert_replace = [(initial_price, supplier_id, selected_product_id) 
-                           for initial_price, supplier_id, status 
-                           in zip(initial_price, supplier_ids, new_status) if status]
+        rows_to_update = [(current_price, supplier_id, selected_product_id) 
+                           for current_price, supplier_id, status 
+                           in zip(current_price, supplier_ids, new_status) if not status]
+        rows_to_insert_replace = [(current_price, supplier_id, selected_product_id) 
+                           for current_price, supplier_id, status 
+                           in zip(current_price, supplier_ids, new_status) if status]
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
-                cursor.executemany("UPDATE suppliers_products SET status = 'Inativo', initial_price = ? WHERE supplier_id = ? AND product_id = ?", 
+                cursor.executemany("UPDATE suppliers_products SET status = 'Inativo', current_price = ? WHERE supplier_id = ? AND product_id = ?", 
                                     rows_to_update)
-                cursor.executemany("INSERT OR REPLACE INTO suppliers_products (initial_price, supplier_id, product_id, status) VALUES (?, ?, ?, 'Ativo')", 
+                cursor.executemany("INSERT OR REPLACE INTO suppliers_products (current_price, supplier_id, product_id, status) VALUES (?, ?, ?, 'Ativo')", 
                                     rows_to_insert_replace)
                 cursor.close()  
                 return True
@@ -262,7 +262,7 @@ class StockController:
 
     @log_function_calls
     def calculate_recommended_orders_items(self):
-        raw_sql = read_sql_query("sql/stock/calculate_order_items.sql")
+        raw_sql = read_sql_query("sql/stock/get_lowest_current_price.sql")
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()

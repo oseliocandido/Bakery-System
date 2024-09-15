@@ -159,20 +159,20 @@ class StockView:
 
         with tab_create_order:
             recommended_products_to_buy = self.stock_controller.calculate_recommended_orders_items(log_call=True)
-            prod_id_column, prod_desc_column, supplier_id_column, supp_desc_column, order_date_column, package_colum, unit_price_column = ('prod_id',
+            prod_id_column, prod_desc_column, supplier_id_column, supp_desc_column, order_date_column, unit_price_column, current_price_column  = ('prod_id',
                                                                                                                         'prod_desc',
                                                                                                                         'supplier_id',
                                                                                                                         'supp_desc',
                                                                                                                         'order_date',
-                                                                                                                        'package_type',
-                                                                                                                        'unit_price')
+                                                                                                                        'unit_price',
+                                                                                                                        'current_price')
             df_recommended_products_to_buy = pd.DataFrame(recommended_products_to_buy, columns=[prod_id_column,
                                                                                                 prod_desc_column,
                                                                                                 supplier_id_column,
                                                                                                 supp_desc_column,
                                                                                                 order_date_column,
-                                                                                                package_colum,
-                                                                                                unit_price_column
+                                                                                                unit_price_column,
+                                                                                                current_price_column
                                                                                                 ])
             df_recommended_products_to_buy[order_date_column] = pd.to_datetime(df_recommended_products_to_buy[order_date_column],format='ISO8601').dt.strftime('%d/%m')
             df_recommended_products_to_buy[order_date_column].fillna('-', inplace=True)
@@ -189,7 +189,7 @@ class StockView:
                     for index, row in group.iterrows():
                         with st.container():
                             # Display product details
-                            package_emoji = '📦' if row[package_colum] == 'Fardo' else 'ⓤ'
+                            package_emoji = '📦' 
                             st.write(
                                 f"<div style='display: flex; justify-content: space-between; align-items: center;'>"
                                     f"{package_emoji}&nbsp;&nbsp;&nbsp;<div style='flex-grow: 1; {color_style}'>{row[prod_desc_column]}</div>"
@@ -202,10 +202,8 @@ class StockView:
                             # Input Quantity
                             with col1:
                                 quantity = st.number_input(f"Quantidade", min_value=1, step=1, key=f"quant_{index}")
-                            
-                            # Input Unit Price
                             with col2:
-                                unit_price = st.number_input(f"Preço Unitário", min_value=0.1, step=0.10, key=f"price_{index}")
+                                unit_price = st.number_input(f"Preço Unitário", value=row[current_price_column], disabled = True, key=f"price_{index}")
                             st.write('')
                             products.append((supplier_id, row[prod_id_column], quantity, unit_price))
 
@@ -233,8 +231,8 @@ class StockView:
                                             format_func=lambda value: f"{value[1]} {emoji.get(value[3])}")  
             selected_product_id = selected_product[0]
             association_prod_supp = self.stock_controller.get_stock_product_association(selected_product_id) 
-            supp_id_column, supp_desc_column, inital_price_column, status_column  = ('ID', 'Fornecedor', 'Preco Inicial','Status')
-            df_association_prod_supp = pd.DataFrame(association_prod_supp, columns=[supp_id_column, supp_desc_column, inital_price_column, status_column])
+            supp_id_column, supp_desc_column, current_price_column, status_column  = ('ID', 'Fornecedor', 'Preco Atual','Status')
+            df_association_prod_supp = pd.DataFrame(association_prod_supp, columns=[supp_id_column, supp_desc_column, current_price_column, status_column])
             st.write('')
             update_dataframe = st.data_editor(df_association_prod_supp,
                                             use_container_width=False,
@@ -243,7 +241,7 @@ class StockView:
                                             column_config={
                                                 supp_id_column: st.column_config.NumberColumn(width=50),
                                                 supp_desc_column: st.column_config.TextColumn(width="medium"),
-                                                inital_price_column: st.column_config.NumberColumn(width="medium"),
+                                                current_price_column: st.column_config.NumberColumn(width="medium"),
                                                 status_column: st.column_config.CheckboxColumn(width="small"),
                                             })
             if st.button("Atualizar"):
