@@ -273,3 +273,17 @@ class StockController:
         except sqlite3.Error as e:
             logger.error(f"Calculate Recommended Orders -> {str(e)}")
             return None
+        
+    
+    @log_function_calls
+    def get_product_history(self):
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT id, description, stock_in_units, valid_to FROM products_history")
+                data = cursor.fetchall()
+                cursor.close()  
+                return data
+        except sqlite3.Error as e:
+            logger.error(f"Get Products History -> {str(e)}")
+            return None

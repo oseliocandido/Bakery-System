@@ -273,3 +273,12 @@ class StockView:
                                 st.error("Não foi possível realizar a operação!")
                             sleep(0.7)
                             st.rerun()
+
+
+    def show_products_history(self) -> None:
+        st.markdown('<h4 style="color:white; text-align: center;">Histórico do Estoque</h4>', unsafe_allow_html=True)
+        records = self.stock_controller.get_product_history(log_call=True)
+        st.dataframe(data=pd.DataFrame(records,columns=['ID','Descrição','Estoque','Data de Término']),
+                     hide_index=True,
+                     use_container_width=True)
+        

@@ -45,7 +45,8 @@ class App:
     "Produtos": {
         "Att. Estoque/Pedido": stock_view.update_stock_and_pending_orders,
         "Gerenciar Pedidos": stock_view.manage_orders,
-        "Gerenciar Produtos": stock_view.crud_products
+        "Gerenciar Produtos": stock_view.crud_products,
+        "Visualizar Histórico": stock_view.show_products_history
     }
     }
 

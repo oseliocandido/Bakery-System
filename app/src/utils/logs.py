@@ -24,7 +24,9 @@ mapping_controller_functions = {
     'update_product_info':('Estoque', 'Atualizar Prod. Info'),
     'update_order_status':('Estoque', 'Atualizar Status do Pedido'),
     'cancel_order':('Estoque', 'Cancelar Pedido'),
-    'calculate_recommended_orders_items':('Estoque', 'Mostrar Produtos Recomendados')
+    'calculate_recommended_orders_items':('Estoque', 'Mostrar Produtos Recomendados'),
+    'get_product_history':('Estoque', 'Get Product History')
+ 
      }
 
 
