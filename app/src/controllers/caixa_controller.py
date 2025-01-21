@@ -25,14 +25,14 @@ class CaixaController:
   
 
     @log_function_calls
-    def update_closing_balance(self, date, period, card_value, pix_value, money_value, observation):
+    def update_closing_balance(self, date, period, money_value, observation):
         try:
             with sqlite3.connect(self.db_path) as conn:
                 conn.execute("""
                             UPDATE balance 
-                            SET card_value = ?, pix_value = ?, money_value = ?, observation = ? 
+                            SET money_value = ?, observation = ? 
                             WHERE date = ? and period = ? """, 
-                            (card_value, pix_value, money_value, observation, date, period))
+                            (money_value, observation, date, period))
             return True 
         except sqlite3.Error as e:
             logger.error(f"Update Balance - Date {date} -> {str(e)}")
