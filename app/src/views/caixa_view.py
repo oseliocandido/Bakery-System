@@ -125,66 +125,34 @@ class CaixaView:
             closing_values = self.caixa_controller.get_closing_values(date, period)
             if closing_values:
                 st.markdown(f'<h3><span style="color:#d05573;">{closing_values.user_name}</span></h3>', unsafe_allow_html=True)
-                card_value = st.text_input("💳 Cartão de Crédito", max_chars=7, placeholder="0000,00",value=f"{closing_values.card_value:.2f}".replace('.', ','))
-                pix_value = st.text_input("📱PIX", max_chars=7, placeholder="0000,00",value=f"{closing_values.pix_value:.2f}".replace('.', ','))
                 money_value = st.text_input("💵 Dinheiro", max_chars=7, placeholder="0000,00",value=f"{closing_values.money_value:.2f}".replace('.', ','))
                 
                 #Initial State
-                card_value_status = "❌"
-                pix_value_status = "❌"
                 money_value_status = "❌"
 
                 # Validation
-                is_card_value_correct = is_money_format_ok(card_value)
-                is_pix_value_correct = is_money_format_ok(pix_value)
                 is_money_value_correct = is_money_format_ok(money_value)
-
-                if not is_card_value_correct:
-                    card_value_status = "❌"
-                elif is_card_value_correct:
-                    card_value_status = "✅"
-
-                if not is_pix_value_correct:
-                    pix_value_status = "❌"
-                elif is_pix_value_correct:
-                    pix_value_status = "✅"
 
                 if not is_money_value_correct:
                     money_value_status = "❌"
                 elif is_money_value_correct:
                     money_value_status = "✅"
 
-                col1, aux, col2, aux2, col3 = st.columns([4, 1, 4, 1, 4])
 
-                with col1:
-                    if card_value_status == "❌":
-                        st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>Cartão {card_value_status}</div>", unsafe_allow_html=True)
-                    else:
-                        st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>Cartão {card_value_status}</div>", unsafe_allow_html=True)
-                with col2:
-                    if pix_value_status == "❌":
-                        st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>PIX {pix_value_status}</div>", unsafe_allow_html=True)
-                    else:
-                        st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>PIX {pix_value_status}</div>", unsafe_allow_html=True)
-                with col3:
-                    if money_value_status == "❌":
-                        st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>Dinheiro {money_value_status}</div>", unsafe_allow_html=True)
-                    else:
-                        st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>Dinheiro {money_value_status}</div>", unsafe_allow_html=True)
+                if money_value_status == "❌":
+                    st.markdown(f"<div style='text-align: center; background-color: #FFCCCC; color: #910c22; padding: 10px; border-radius: 5px;'>Dinheiro {money_value_status}</div>", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"<div style='text-align: center; background-color: #CCFFCC; color: #136f63; padding: 10px; border-radius: 5px;'>Dinheiro {money_value_status}</div>", unsafe_allow_html=True)
 
                 st.write('')
                 observation = st.text_area('Observações Adicionais', placeholder="Texto", height=250,value=closing_values.observation)
 
-                conditions_check = [is_pix_value_correct,
-                                    is_money_value_correct,
-                                    is_card_value_correct]
-        
+                conditions_check = [is_money_value_correct]
+                                   
                 if all(conditions_check):
                     if st.button("Atualizar"):
                         response = self.caixa_controller.update_closing_balance(date, 
                                                                                 period,
-                                                                                card_value.replace(',','.'),
-                                                                                pix_value.replace(',','.'),
                                                                                 money_value.replace(',','.'), 
                                                                                 observation,
                                                                                 log_call=True)
