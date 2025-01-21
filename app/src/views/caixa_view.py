@@ -124,6 +124,7 @@ class CaixaView:
             period  = st.radio("Período",options=['Dia','Tarde'])
             closing_values = self.caixa_controller.get_closing_values(date, period)
             if closing_values:
+                st.markdown(f'<h3><span style="color:#d05573;">{closing_values.user_name}</span></h3>', unsafe_allow_html=True)
                 card_value = st.text_input("💳 Cartão de Crédito", max_chars=7, placeholder="0000,00",value=f"{closing_values.card_value:.2f}".replace('.', ','))
                 pix_value = st.text_input("📱PIX", max_chars=7, placeholder="0000,00",value=f"{closing_values.pix_value:.2f}".replace('.', ','))
                 money_value = st.text_input("💵 Dinheiro", max_chars=7, placeholder="0000,00",value=f"{closing_values.money_value:.2f}".replace('.', ','))

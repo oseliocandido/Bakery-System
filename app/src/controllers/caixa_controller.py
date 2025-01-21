@@ -43,10 +43,21 @@ class CaixaController:
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
-                cursor.execute("SELECT card_value, pix_value, money_value, observation FROM balance WHERE date = ? AND period = ?", (date, period))
+                #cursor.execute("SELECT card_value, pix_value, money_value, observation FROM balance WHERE date = ? AND period = ?", (date, period))
+                cursor.execute("""SELECT 
+                                    u.complete_name, 
+                                    card_value, 
+                                    pix_value,
+                                    money_value,
+                                    b.observation 
+                                    FROM balance b 
+                               LEFT JOIN users u on u.numero_identificacao = b.user_id 
+                               WHERE date = ? AND period = ?""", (date, period))
                 row = cursor.fetchone()
                 cursor.close()
-            return Balance(None, date, row[0], row[1], row[2], row[3])  if not row is None else None
+            #return Balance(None, date, row[0], row[1], row[2], row[3])  if not row is None else None
+            return Balance(row[0], date, row[1], row[2], row[3], row[4])  if not row is None else None
+       
         except sqlite3.Error as e:
             logger.error(f"Get Balance of Date {date} -> {str(e)}")
             return None
