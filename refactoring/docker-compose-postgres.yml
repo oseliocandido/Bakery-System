@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16.6
+    container_name: postgres_bakery
+    env_file:
+      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - fastapi
+
+  fast-api:
+    container_name: fast_api_bakery
+    build:
+      context: .
+      target: prod
+    restart: unless-stopped
+    entrypoint: ["python", "-m", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "4000"]
+    ports:
+      - 4000:80
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:80/welcome"]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    networks:
+      - fastapi
+
+networks:
+  fastapi:
+    driver: bridge  
+
+volumes:
+  postgres_data:
