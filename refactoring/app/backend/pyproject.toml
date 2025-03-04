@@ -8,16 +8,16 @@ authors = [
 readme = "README.md"
 requires-python = "3.11.3"
 dependencies = [
-    "fastapi (>=0.115.10,<0.116.0)",
-    "psycopg[binary,pool] (>=3.2.5,<4.0.0)",
-    "uvicorn (>=0.34.0,<0.35.0)"
+    "fastapi == 0.115.10",
+    "psycopg[binary,pool] == 3.2.5",
+    "uvicorn == 0.34.0"
 ]
 
 [tool.poetry]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.4"
+pytest = "8.3.4"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core==2.0.0"]
 build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,48 @@
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: postgres.Dockerfile
+    container_name: postgres_dev
+    env_file:
+      - ./.env
+    volumes:
+      - pg_data_5:/var/lib/postgresql/data  
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - backend
+  
+  fast-api:
+    container_name: fast_api_dev
+    build:
+      context: .
+      target: dev
+    depends_on:
+      - postgres
+    volumes:
+      - ./app/backend/:/app/backend/
+    entrypoint: ["python", "-m", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "4200", "--reload"]
+    ports:
+      - 4200:4200
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200/welcome"]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge  
+  frontend:
+   driver: bridge 
+  
+volumes:
+  pg_data_5:
