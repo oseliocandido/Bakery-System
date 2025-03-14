@@ -1,4 +1,17 @@
 -----------------BUSINESS TABLES----------------
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY, 
+    numero_identificacao INTEGER,  -- Changed INTEGER to SERIAL
+    complete_name TEXT,
+    date_nascimento DATE,
+    date_admissao DATE,
+    role TEXT,
+    telephone_number TEXT,
+    observation TEXT,
+    status TEXT DEFAULT 'Ativo',
+    UNIQUE (numero_identificacao)
+);
+
 CREATE TABLE IF NOT EXISTS attendance (
     id SERIAL PRIMARY KEY,  -- Changed INTEGER PRIMARY KEY AUTOINCREMENT to SERIAL
     user_id INTEGER,
@@ -24,12 +37,12 @@ CREATE TABLE IF NOT EXISTS balance (
 CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,  -- Changed INTEGER PRIMARY KEY AUTOINCREMENT to SERIAL
     description TEXT NOT NULL,
-    date_registration TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Changed DATE to TIMESTAMP
+    date_registration TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,  -- Changed DATE to TIMESTAMP
     current_stock_in_units NUMERIC NOT NULL,  -- Changed REAL to NUMERIC for precision
     min_stock INTEGER NOT NULL,
     status TEXT DEFAULT 'Ativo',
     package_type TEXT CHECK (package_type IN ('Fardo','Unidade')),
-    last_update_stock TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Changed SQLite-specific DATETIME function
+    last_update_stock TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,  -- Changed SQLite-specific DATETIME function
     CONSTRAINT status_check CHECK (status IN ('Ativo','Inativo'))
 );
 
@@ -37,8 +50,8 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE TABLE IF NOT EXISTS suppliers (
     id SERIAL PRIMARY KEY,  -- Changed INTEGER PRIMARY KEY AUTOINCREMENT to SERIAL
     description TEXT,
-    date_registration TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Changed DATE to TIMESTAMP
-    last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Changed DATE to TIMESTAMP
+    date_registration TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,  -- Changed DATE to TIMESTAMP
+    last_update TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP  -- Changed DATE to TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS suppliers_products (
@@ -60,7 +73,7 @@ CREATE TABLE IF NOT EXISTS orders (
     supplier_id INTEGER NOT NULL,
     delivery_date DATE,  -- Removed NULL since DATE allows NULL by default
     status TEXT DEFAULT 'Pendente' CHECK (status IN ('Pendente','Entregue','Cancelado')),
-    last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Changed DATE to TIMESTAMP
+    last_update TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,  -- Changed DATE to TIMESTAMP
     FOREIGN KEY (supplier_id) REFERENCES suppliers (id)
 );
 
@@ -77,18 +90,13 @@ CREATE TABLE IF NOT EXISTS orders_items (
 );
 
 
-
-
-
-
-
 ----------- Analytics (SCD type II)----------- 
 CREATE TABLE IF NOT EXISTS products_history (
     id INTEGER,
     description TEXT,
     stock_in_units INTEGER,
-    valid_from TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Changed DATETIME to TIMESTAMP
-    valid_to TIMESTAMP  -- Changed DATETIME to TIMESTAMP
+    valid_from TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,  -- Changed DATETIME to TIMESTAMP
+    valid_to TIMESTAMPTZ  -- Changed DATETIME to TIMESTAMP
 );
 
 ----------- Analytics (SCD type II)----------- 
