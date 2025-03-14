@@ -1,6 +1,23 @@
 import psycopg
+from typing import Any, Sequence
+from psycopg import Cursor
 
-# Dependency for getting a database connection and committing transactions
+
+class DictRowFactory:
+    def __init__(self, cursor: Cursor[Any]):
+        self.fields = [c.name for c in cursor.description]
+
+    def __call__(self, values: Sequence[Any]) -> dict[str, Any]:
+        return dict(zip(self.fields, values))
+
+
 def get_db():
-    with psycopg.connect("dbname=mydb user=myuser password=mypass", autocommit=True) as conn:
+    conn = psycopg.connect(
+        "postgresql://postgres:my_super_secret_password@postgres_dev/postgres",
+        row_factory=DictRowFactory,
+        autocommit=True
+    )
+    try:
         yield conn
+    finally:
+        conn.close()

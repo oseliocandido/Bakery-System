@@ -1,65 +1,165 @@
-from fastapi import APIRouter, HTTPException, Depends
-# from app.models.users import UserCreate, UserResponse, UserDTO
-# from app.services.database import get_db
-# import psycopg
+import psycopg
+from fastapi import APIRouter, HTTPException, Depends, Query
+from typing import Optional
 
-router = APIRouter()
+from src.models.attendance import  BaseAttendance, Attendance
+from src.services.database import get_db
 
-# @router.post("/", response_model=UserResponse)
-# async def insert_employee(user: UserCreate, db: psycopg.Connection = Depends(get_db)):
-#     insert_query = """INSERT INTO users (numero_identificacao, complete_name, 
-#                             date_nascimento, date_admissao, role, telephone_number, observation) 
-#                             VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING numero_identificacao"""
+
+router = APIRouter(tags=['attendances'], prefix='/users/{id_number}/attendances')
+
+
+@router.get("/")
+def get_attendances(
+    id_number: int,
+    date: Optional[str] = Query(None, description="Filter by attendance date (YYYY-MM-DD)"),
+    type: Optional[str] = Query(None, description="Filter by attendance type (e.g., check-in, check-out)"),
+    db: psycopg.Connection = Depends(get_db),
+) -> list[BaseAttendance]:
+    """
+    Get attendances for a specific user, optionally filtered by date and type.
+
+    Args:
+        id_number: The ID of the user.
+        date: (Optional) The date of attendance (YYYY-MM-DD).
+        type: (Optional) The type of attendance (e.g., "check-in", "check-out").
+        db: Database connection object.
+
+    Returns:
+        A list of attendance records for the user.
+    """
+    query = """
+        SELECT user_id, date, type, time
+        FROM attendance
+        WHERE user_id = %s
+    """
+    params = [id_number]
+
+    if date:
+        query += " AND date = %s"
+        params.append(date)
+
+    if type:
+        query += " AND type = %s"
+        params.append(type)
+
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(query, tuple(params))
+            rows = cursor.fetchall()
+
+        if not rows:
+            raise HTTPException(status_code=404, detail="No attendances found for this user.")
+        
+        return [BaseAttendance(**row) for row in rows]
+
+    except psycopg.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching attendances: {str(e)}")
+
+
+
+@router.post("/")
+def create_attendance(attendance: BaseAttendance, db: psycopg.Connection = Depends(get_db)) -> dict:
+    """
+    Create a new attendance record for a specific user.
+
+    Args:
+        user_id: The ID of the user.
+        date: The date of the attendance.
+        type: The type of attendance.
+        time: The time of the attendance.
+        db: Database connection object.
+
+    Returns:
+        A message indicating success or failure.
+    """
+    insert_query = """
+        INSERT INTO attendance (user_id, date, type, time)
+        VALUES (%s, %s, %s, %s)
+    """
+
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(insert_query, (attendance.user_id, attendance.date, attendance.type, attendance.time))
+        return {"message": "Attendance created."}
+
+    except psycopg.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error creating attendance: {str(e)}")
+
+
+
+# @router.put("/{attendance_id}")
+# def update_attendance(
+#     user_id: int, 
+#     attendance_id: int, 
+#     date: date, 
+#     type: str, 
+#     time: time, 
+#     db: psycopg.Connection  = Depends(get_db)
+# ):
+#     """
+#     Modify an existing attendance record for a specific user.
+
+#     Args:
+#         user_id: The ID of the user.
+#         attendance_id: The ID of the attendance to update.
+#         date: The new date for the attendance.
+#         type: The new type for the attendance.
+#         time: The new time for the attendance.
+#         db: Database connection object.
+
+#     Returns:
+#         A message indicating success or failure.
+#     """
+#     update_query = """
+#         UPDATE attendance
+#         SET date = %s, type = %s, time = %s
+#         WHERE user_id = %s 
+#         RETURNING date, type;
+#     """
+
 #     try:
 #         with db.cursor() as cursor:
-#             cursor.execute(insert_query, (
-#                 user.numero_identificacao, user.complete_name, user.date_nascimento, 
-#                 user.date_admissao, user.role, user.telephone_number, user.observation))
-#             # Commit is not needed here because the context manager automatically handles the transaction
+#             cursor.execute(update_query, (date, type, time, user_id, attendance_id))
 #             row = cursor.fetchone()
-#         return UserResponse(numero_identificacao=row[0], complete_name=user.complete_name)
+
+#         if not row:
+#             raise HTTPException(status_code=404, detail="Attendance not found")
+
+#         return {"message": f"Attendance with ID {attendance_id} updated"}
+
 #     except psycopg.Error as e:
-#         raise HTTPException(status_code=400, detail=f"Error inserting employee: {str(e)}")
+#         raise HTTPException(status_code=500, detail=f"Error updating attendance: {str(e)}")
 
 
-# @router.get("/all", response_model=list[UserDTO])
-# async def get_users(selected_columns: list[str] = None, db: psycopg.Connection = Depends(get_db)):
-#     selected_columns = selected_columns or ["numero_identificacao", "complete_name"]
-#     columns_str = ", ".join(selected_columns)
-#     query = f"SELECT {columns_str} FROM users"
+# @router.delete("/{attendance_id}")
+# def delete_attendance(user_id: int, attendance_id: int, db: psycopg.Connection  = Depends(get_db)):
+#     """
+#     Delete an attendance record for a specific user.
+
+#     Args:
+#         user_id: The ID of the user.
+#         attendance_id: The ID of the attendance to delete.
+#         db: Database connection object.
+
+#     Returns:
+#         A message indicating success or failure.
+#     """
+#     delete_query = """
+#         DELETE FROM attendance
+#         WHERE user_id = %s AND id = %s
+#         RETURNING id;
+#     """
+
 #     try:
 #         with db.cursor() as cursor:
-#             cursor.execute(query)
-#             rows = cursor.fetchall()
-#         users = [UserDTO(**dict(zip(selected_columns, row))) for row in rows]
-#         return users
+#             cursor.execute(delete_query, (user_id, attendance_id))
+#             row = cursor.fetchone()
+
+#         if not row:
+#             raise HTTPException(status_code=404, detail="Attendance not found")
+
+#         return {"message": f"Attendance with ID {attendance_id} deleted"}
+
 #     except psycopg.Error as e:
-#         raise HTTPException(status_code=400, detail=f"Error fetching users: {str(e)}")
-
-
-# @router.put("/{user_id}", response_model=UserDTO)
-# async def update_employee(user_id: str, user: UserCreate, db: psycopg.Connection = Depends(get_db)):
-#     update_query = """UPDATE users SET complete_name = %s, date_nascimento = %s, date_admissao = %s,
-#                       role = %s, telephone_number = %s, observation = %s WHERE numero_identificacao = %s"""
-#     try:
-#         with db.cursor() as cursor:
-#             cursor.execute(update_query, (
-#                 user.complete_name, user.date_nascimento, user.date_admissao, 
-#                 user.role, user.telephone_number, user.observation, user_id))
-#             # Commit is not needed here because the context manager automatically handles the transaction
-#         return user
-#     except psycopg.Error as e:
-#         raise HTTPException(status_code=400, detail=f"Error updating employee: {str(e)}")
-
-
-# @router.patch("/{user_id}", response_model=UserDTO)
-# async def update_employee_status(user_id: str, status: bool, db: psycopg.Connection = Depends(get_db)):
-#     status_str = "Ativo" if status else "Inativo"
-#     update_query = "UPDATE users SET status = %s WHERE numero_identificacao = %s"
-#     try:
-#         with db.cursor() as cursor:
-#             cursor.execute(update_query, (status_str, user_id))
-#             # Commit is not needed here because the context manager automatically handles the transaction
-#         return {"numero_identificacao": user_id, "status": status_str}
-#     except psycopg.Error as e:
-#         raise HTTPException(status_code=400, detail=f"Error updating employee status: {str(e)}")
+#         raise HTTPException(status_code=500, detail=f"Error deleting attendance: {str(e)}")
