@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bakery Avenida</title>
+<link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+   
+  <div class="sidebar">
+    <a href="#" onclick="showSection('createUser')">Create User</a>
+    <a href="#" onclick="showSection('inactiveUser')">Inactive User</a>
+    <a href="#" onclick="showSection('showUsers')">Show Users</a>
+    <a href="#" onclick="showSection('updateUser')">Update User</a>
+  </div>
+  <div class="content">
+    <div id="createUser" class="section" style="display: none;">
+        <!-- Create User Form -->
+        <div class="form-container">
+            <h2>Cadastrar Funcionário</h2>
+            <form id="create-user-form">
+                <label for="name">Nome</label>
+                <input type="text" id="name" placeholder="Enter Name" required>
+    
+                <label for="role">Cargo</label>
+                <input type="text" id="role" placeholder="Enter Role" required>
+    
+                <label for="dob">Data de Admissão</label>
+                <input type="date" id="dob" required>
+    
+                <label for="doa">Data de Admissão</label>
+                <input type="date" id="doa" required>
+
+                <label for="telephone">Telephone Number</label>
+                <input type="text" id="telephone" placeholder="Enter Telephone Number" required>
+    
+                <label for="status">Status</label>
+                <input type="text" id="status" placeholder="Enter Status" required>
+    
+                <label for="observation">Observation</label>
+                <input type="text" id="observation" placeholder="Enter Observation">
+
+                <label for="options">Cargo</label>
+                <select id="options" name="options">
+                    <option value="Option 1">Atendente</option>
+                    <option value="Option 2" selected>Caixa</option>
+                    <option value="Option 3">Cozinheiro</option>
+                </select>
+                
+                <button type="submit">Create User</button>
+            </form>
+    </div>
+    <div id="inactiveUser" class="section" style="display: none;">
+      <h2>Inactive User</h2>
+      <p>Form to inactivate a user.</p>
+      <h2>Deactivated</h2>
+    </div>
+    <div id="showUsers" class="section" style="display: none;">
+      <h2>Show Users</h2>
+      <p>List of users with details.</p>
+    </div>
+    <div id="updateUser" class="section" style="display: none;">
+      <h2>Update User</h2>
+      <p>Form to update user information.</p>
+    </div>
+  </div>
+  <script>
+    const user_information = 2;
+  </script>
+
+<script>
+  function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(section => {
+      section.style.display = 'none';
+    });
+    document.getElementById(sectionId).style.display = 'block';
+  }
+</script>
+
+
+  </footer>
+</body>
+</html>

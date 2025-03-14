@@ -7,6 +7,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
+node_modules/
+
 # Logs
 *.log
 

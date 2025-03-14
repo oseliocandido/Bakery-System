@@ -1,0 +1,110 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container for the whole page */
+.container {
+    width: 80%;
+    max-width: 1000px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styling */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* Users List Section */
+#user-list {
+    margin-bottom: 40px;
+}
+
+.user-list {
+    list-style: none;
+    padding: 0;
+}
+
+.user-list li {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-list li:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+.user-list li:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+/* Form Container */
+.form-container {
+    background-color: #fafafa;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+/* Form Inputs */
+.input-group {
+    margin-bottom: 15px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+button {
+    padding: 15px 25px;
+    width: 100%;
+    max-width: 300px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #45a049;
+}

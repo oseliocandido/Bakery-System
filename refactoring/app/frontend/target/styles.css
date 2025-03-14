@@ -1,0 +1,136 @@
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    background-color: #fff4e6;
+  }
+
+  .sidebar {
+    width: 200px;
+    background-color: #5e4134;
+    padding: 20px;
+  }
+
+  .sidebar a {
+    display: block;
+    color: #000000;;
+    text-decoration: none;
+    padding: 10px;
+    margin: 100px 0;
+    background: #ffffff;
+    border-radius: 15px;
+    border-color: #5e4134;
+    text-align: center;
+  }
+
+  .sidebar a:active {
+    background: #854442;
+  }
+
+  .sidebar a:hover {
+    background: #555;
+    border-radius: 5px;
+    color: white;
+  }
+
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  input {
+    width: 100%;
+    border:1px outset #007BFF;
+    margin: 10px;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    border: 5x solid;
+    border-color: rgb(34, 199, 149);
+    border-radius: 10px;
+}
+
+    footer a{
+        font-size: medium;
+        color: aqua;
+        padding: 0px;
+    }
+
+
+/* Style the dropdown */
+select, input[list] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Hover & focus styles */
+select:hover, option:hover,
+select:focus, option:focus {
+    border-color: #007BFF;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    select, input[list] {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+
+.form-container {
+    background-color: white;
+  
+}
+h2 {
+    text-align: center;
+    color: #333;
+}
+label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+}
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    margin: 20px 0px 0px 0px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}

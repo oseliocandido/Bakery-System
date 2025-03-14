@@ -5,9 +5,11 @@ services:
       dockerfile: postgres.Dockerfile
     container_name: postgres_dev
     env_file:
-      - ./.env
+       - ./.env
+    ports:
+      - '5432:5432'
     volumes:
-      - pg_data_5:/var/lib/postgresql/data  
+      - pg_data_1:/var/lib/postgresql/data  
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -30,7 +32,7 @@ services:
     ports:
       - 4200:4200
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4200/welcome"]
+      test: ["CMD", "curl", "-f", "http://localhost:4200/api/welcome"]
       interval: 30s
       timeout: 30s
       retries: 5
@@ -45,4 +47,4 @@ networks:
    driver: bridge 
   
 volumes:
-  pg_data_5:
+  pg_data_1:
