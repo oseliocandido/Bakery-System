@@ -11,8 +11,16 @@ app.get("/users", (req, res) => {
     res.sendFile(path.join(__dirname, "user.html"));
 });
 
+app.get("/home", (req, res) => {
+    res.sendFile(path.join(__dirname, "home.html"));
+});
 
-app.listen(PORT, () => {
+app.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, "login","login.html"));
+});
+
+
+app.listen(PORT, "0.0.0.0" ,() => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
 

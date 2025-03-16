@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form>
+            <input id="user-name" type="text" placeholder="Usuário" required>
+            <input id="password"  type="password" placeholder="Senha" required>
+            <button id="login-button"  type="submit">Login</button>
+        </form>
+    </div>
+    <script>
+        const usernameInput = document.getElementById('user-name');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('login-button');
+
+        // Function to check if both inputs are filled
+        function checkInputs() {
+            if (usernameInput.value !== '' && passwordInput.value !== '') {
+                loginButton.classList.add('active'); 
+            } else {
+                loginButton.classList.remove('active'); 
+            }
+        }
+
+        // Listen for input events
+        usernameInput.addEventListener('input', checkInputs);
+        passwordInput.addEventListener('input', checkInputs);
+    </script>
+</body>
+</html>

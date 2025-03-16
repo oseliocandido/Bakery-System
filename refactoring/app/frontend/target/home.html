@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            width: 20%;
+            background-color: #333;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            box-sizing: border-box;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            padding: 15px;
+            display: block;
+            text-align: center;
+            margin: 0px 0px 5px 0px;
+            border: 1px solid white;
+        }
+        .navbar a:hover {
+            background-color: #555;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#home">HOME</a>
+        <a href="#users">USERS</a>
+        <a href="#frequencies">FREQUENCIES</a>
+        <a href="#products">PRODUCTS</a>
+        <a href="#supplier">SUPPLIER</a>
+    </div>
+    <div class="content">
+        <h1>Welcome to the Home Page</h1>
+        <p>Select a link from the navigation bar.</p>
+    </div>
+</body>
+</html>
