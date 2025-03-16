@@ -1,85 +1,92 @@
+/* General Styles */
 * {
   font-family: Arial, Helvetica, sans-serif;
   list-style-type: none;
   text-decoration: none;
+  box-sizing: border-box; 
 }
 
 body {
   background-color: #fff4e6;
-  margin: 0;
-  height: 100vh;
 }
 
-h1 {
-  text-align: center;
-  margin-top: 40px; /* Restoring the margin from the old code */
-}
-
+/* Navigation Bar */
 nav {
   width: 15%;
-  position: absolute; /* Restoring 'position: absolute' from old code */
-  height: inherit; /* Keeping height styling */
-  display: flex;
-  padding: 0px;
-  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
   background-color: #5e4134;
+  align-items: center;
 }
 
 nav h1 {
   text-align: center;
   color: white;
-  display: block; /* Ensuring it behaves like in the old '.sidebar' */
+  padding: 25px;
 }
 
 nav ul {
-  padding: inherit
+  width: 100%;
+  padding: 0px;
+  margin-top: 15px;
 }
 
-nav li a{
+nav li a {
+  background: #ffffff;
   color: #5e4134;
   display: block;
   text-align: left;
   padding: 10px;
-  margin: 15px;
-  margin-bottom: 30px;
-  background: #ffffff;
+  margin: 20px;
   border-radius: 10px;
   transition: background 0.3s ease;
 }
 
-nav a:hover {
+nav li a:hover {
   background-color: #e4ab85;
   color: #000000;
 }
 
+/* Main Content Wrapper */
+.container-create-user {
+  margin-left: 15%;
+  margin-top: 5%;
+  height: 100%;
+  width: 85%;
+}
+
+/* User Form */
 .user-form {
-  width: 50%; /* Adjust width for better centering */
-  margin: auto; /* Center horizontally */
-  display: block; /* Flexbox for better alignment */
+  width: 50%;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .user-form label {
-  display: block; /* Ensure label is on a separate line */
-  margin-bottom: 5px; /* Add spacing between label and input */
-  font-weight: bold; /* Make labels more readable */
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
 }
 
 .user-form input,
 .user-form select {
-  width: 100%; /* Make inputs take full width */
-  padding: 8px; /* Add padding for better appearance */
-  margin-bottom: 20px; /* Add spacing between input fields */
-  border: 1px solid #ccc; /* Add a subtle border */
-  border-radius: 5px; /* Slightly rounded corners */
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
-}
-
-
-/* Button styling */
-.form-createUser button {
   width: 100%;
   padding: 10px;
-  margin-top: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Button Styling */
+.user-form button {
+  width: 100%;
+  padding: 12px;
   background: #007bff;
   color: white;
   font-size: 16px;
@@ -89,6 +96,65 @@ nav a:hover {
   transition: background 0.3s ease;
 }
 
-.form-createUser button:hover {
+.user-form button:hover {
   background: #0056b3;
+}
+
+/* Employees Section */
+#all-employees {
+  margin-left: 15%;
+  margin-top: 5%;
+  width: 85%;
+}
+
+#all-employees ul {
+  padding: 0;
+}
+
+#all-employees .header {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);  /* Creates 3 equal columns */
+  gap: 20px;
+  background-color: #5e4134;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#all-employees li {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);  /* Creates 3 equal columns */
+  gap: 20px;
+  margin-bottom: 15px;
+  padding: 15px;
+  align-items: center;
+  text-align: center;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#all-employees li div {
+  font-size: 14px;
+}
+
+.status-box {
+  padding: 8px 12px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  width: 80px;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.status-box.active {
+  background-color: green;
+}
+
+.status-box.inactive {
+  background-color: red;
 }

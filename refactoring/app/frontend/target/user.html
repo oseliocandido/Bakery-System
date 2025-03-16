@@ -10,58 +10,77 @@
   <nav>
     <h1>Funcionários</h1>
     <ul>
+        <li><a href="#" onclick="showSection('all-employees')">Funcionários</a></li>
         <li><a href="#" onclick="showSection('createUser')">Cadastrar</a></li>
-        <li><a href="#" onclick="showSection('inactiveUser')">Desativar</a></li>
-        <li><a href="#" onclick="showSection('showUsers')">Show Users</a></li>
-        <li><a href="#" onclick="showSection('updateUser')">Atualizar</a></li>
     </ul>
   </nav>
-  <div class="user-form">
-    <form id='createUser' class="form-createUser" style="display: none;">
+  <div id="all-employees" class="section">
+    <ul>
+      <!-- Header Row with Field Names -->
+      <li class="header">
+        <div><strong>Numero de Identificação</strong></div>
+        <div><strong>Nome</strong></div>
+        <div><strong>Data de Nascimento</strong></div>
+        <div><strong>Data de Admissão</strong></div>
+        <div><strong>Cargo</strong></div>
+        <div><strong>Telefone</strong></div>
+        <div><strong>Observação</strong></div>
+        <div><strong>Status</strong></div>
+      </li>
+    
+      <!-- User Row 1 -->
+      <li>
+        <div>12345</div>
+        <div>John Doe</div>
+        <div>1990-01-01</div>
+        <div>2015-01-01</div>
+        <div>Manager</div>
+        <div>123-456-7890</div>
+        <div>Regular employee</div>
+        <div><span class="status-box active">Active</span></div>
+      </li>
+    
+      <!-- User Row 2 -->
+      <li>
+        <div>12346</div>
+        <div>Jane Smith</div>
+        <div>1992-02-01</div>
+        <div>2018-03-01</div>
+        <div>Atendente</div>
+        <div>234-567-8901</div>
+        <div>Excellent performance</div>
+        <div><span class="status-box inactive">Inactive</span></div>
+      </li>
+    
+      <!-- Additional user rows can follow the same structure -->
+    </ul>
+    
+  </div>
+  
+
+  <div id="createUser" class="section container-create-user" style="display: none">
+    <form class="user-form">
       <label for="name">Nome</label>
-      <input type="text" id="name" placeholder="Enter Name" required>
-
+      <input type="text" id="name" placeholder="Nome" required>
       <label for="role">Cargo</label>
-      <input type="text" id="role" placeholder="Enter Role" required>
-
+      <select id="options" name="options">
+        <option value="Option 1">Atendente</option>
+        <option value="Option 2" selected>Caixa</option>
+        <option value="Option 3">Cozinheiro</option>
+      </select>
       <label for="dob">Data de Admissão</label>
       <input type="date" id="dob" required>
-
-      <label for="doa">Data de Saída</label> <!-- Fixed duplicate label issue -->
+      <label for="doa">Data de Nascimento</label> <!-- Fixed duplicate label issue -->
       <input type="date" id="doa" required>
-
-      <label for="telephone">Telephone Number</label>
-      <input type="text" id="telephone" placeholder="Enter Telephone Number" required>
-
-      <label for="observation">Observation</label>
-      <input type="text" id="observation" placeholder="Enter Observation">
-
-      <label for="options">Cargo</label>
-      <select id="options" name="options">
-          <option value="Option 1">Atendente</option>
-          <option value="Option 2" selected>Caixa</option>
-          <option value="Option 3">Cozinheiro</option>
-      </select>
-
+      <label for="telephone">Telefone</label>
+      <input type="text" id="telephone" placeholder="(XX) XXXXX-XXXX" required>
+      <label for="observation">Observação</label>
+      <input type="text" id="observation">
       <button type="submit">Create User</button>
     </form>
   </div>
-    <div id="inactiveUser" class="section" style="display: none;">
-      <h2>Inactive User</h2>
-      <p>Form to inactivate a user.</p>
-      <h2>Deactivated</h2>
-    </div>
-    <div id="showUsers" class="section" style="display: none;">
-      <h2>Show Users</h2>
-      <p>List of users with details.</p>
-    </div>
-    <div id="updateUser" class="section" style="display: none;">
-      <h2>Update User</h2>
-      <p>Form to update user information.</p>
-  </div>
-  <script>
-    const user_information = 2;
-  </script>
+
+ 
 
 <script>
   function showSection(sectionId) {
@@ -72,7 +91,5 @@
   }
 </script>
 
-
-  </footer>
 </body>
 </html>
