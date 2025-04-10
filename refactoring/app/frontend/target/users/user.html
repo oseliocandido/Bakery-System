@@ -10,9 +10,9 @@
   <nav>
     <h1>Funcionários</h1>
     <ul>
-        <li><a href="#show"   onclick="showSection('all-employees')">Funcionários</a></li>
-        <li><a href="#create" onclick="showSection('createUser')">Cadastrar</a></li>
-        <li><a href="#update" onclick="showSection('updateUser')">Atualizar</a></li>
+        <li><a href="#show"   id="show-employees">Funcionários</a></li>
+        <li><a href="#create" id="create-user">Cadastrar</a></li>
+        <li><a href="#update" id="update-user">Atualizar</a></li>
     </ul>
   </nav>
   <div id="all-employees" class="section">
@@ -58,7 +58,6 @@
     
   </div>
   
-
   <div id="createUser" class="section container-create-user" style="display: none">
     <form class="user-form">
       <label for="name">Nome</label>
@@ -83,12 +82,11 @@
 
   <div id="updateUser" class="section container-create-user" style="display: none">
     <form class="user-form" onsubmit="updateUser(event)">
-      <label for="update-numero_identificacao">Numero de Identificação</label>
-      <select id="update-numero_identificacao" onchange="handleUserSelection()">
-        <option value="">Selecione um usuário</option>
+      <label for="update-numero_identificacao">Id</label>
+      <select id="update-numero_identificacao">
       </select>
       <label for="update-name">Nome</label>
-      <input type="text" id="update-name" placeholder="" required>
+      <input type="text" id="update-name" required>
       <label for="update-role">Cargo</label>
       <select id="update-role" name="update-role">
         <option value="Auxiliar de Padeiro">Auxiliar de Padeiro</option>
@@ -101,120 +99,39 @@
       <label for="update-doa">Data de Nascimento</label>
       <input type="date" id="update-doa" required>
       <label for="update-telephone">Telefone</label>
-      <input type="text" id="update-telephone" placeholder="" required>
+      <input type="text" id="update-telephone" required>
       <label for="update-observation">Observação</label>
-      <input type="text" id="update-observation" placeholder="">
+      <input type="text" id="update-observation">
+      <label for="update-status">Status</label>
+      <select id="update-status">
+        <option value="Ativo">Ativo</option>
+        <option value="Inativo">Inativo</option>
+      </select>
       <button type="submit" onsubmit="">Update User</button>
+      <div id="notification" class="notification" style="display: none;"></div>
     </form>
   </div>
 
-<script>
-    let employees = [];
+  <script type="module">
+    import { showSection, fetchEmployeesOnLoad, handleUserSelection, updateUser } from './get_users.js';
 
-    async function fetchEmployees() {
-        const response = await fetch('http://localhost:4200/api/users');
-        employees = await response.json();
-        
-        const selectElement = document.getElementById("update-numero_identificacao");
+    // Add event listeners for navigation links
+    document.getElementById('show-employees').addEventListener('click', () => showSection('all-employees'));
+    document.getElementById('create-user').addEventListener('click', () => showSection('createUser'));
+    document.getElementById('update-user').addEventListener('click', () => showSection('updateUser'));
 
-        // Clear previous options (except the default one)
-        selectElement.innerHTML = `<option value="">Selecione um usuário</option>`;
+    // Add event listener for user selection
+    document.getElementById('update-numero_identificacao').addEventListener('change', handleUserSelection);
 
-        // Populate dropdown
-        employees.forEach(user => {
-            const option = document.createElement("option");
-            option.value = user.numero_identificacao;
-            option.textContent = user.numero_identificacao;
-            selectElement.appendChild(option);
-        });
-    }
+    // Add event listener for update form
+    document.getElementById('updateUser').addEventListener('submit', (event) => {
+      event.preventDefault();
+      updateUser(event);
+    });
 
-    function handleUserSelection() {
-        const selectedId = document.getElementById("update-numero_identificacao").value;
-        if (!selectedId) return;
-
-        const user = employees.find(emp => emp.numero_identificacao == selectedId);
-        if (user) {
-            document.getElementById("update-name").value = user.complete_name;
-            document.getElementById("update-dob").value = user.date_admissao.split('T')[0];
-            document.getElementById("update-doa").value = user.date_nascimento.split('T')[0];
-            document.getElementById("update-telephone").value = user.telephone_number;
-            document.getElementById("update-observation").value = user.observation || "";
-
-             // Directly set the value of the role select dropdown
-            document.getElementById("update-role").value = user.role;
-        }
-    }
 
     // Fetch employees on page load
-    fetchEmployees();
-
-
-
-
-    async function updateUser(event) {
-    event.preventDefault(); // Prevent form from submitting normally
-
-    const selectedId = document.getElementById("update-numero_identificacao").value;
-    if (!selectedId) {
-        alert("Por favor, selecione um usuário para atualizar.");
-        return;
-    }
-
-    const dateAdmissao = document.getElementById("update-dob").value;
-    const dateNascimento = document.getElementById("update-doa").value;
-
-    // Ensure the date format is correct (ISO 8601 format with time set to 00:00:00)
-    const formattedDateAdmissao = `${dateAdmissao}T00:00:00`;
-    const formattedDateNascimento = `${dateNascimento}T00:00:00`;
-
-    const updatedUser = {
-        numero_identificacao: selectedId,
-        complete_name: document.getElementById("update-name").value,
-        role: document.getElementById("update-role").value,
-        date_admissao: formattedDateAdmissao,
-        date_nascimento: formattedDateNascimento,
-        telephone_number: document.getElementById("update-telephone").value,
-        observation: document.getElementById("update-observation").value,
-        status: "Ativo"
-    };
-   
-    try {
-        const response = await fetch(`http://localhost:4200/api/users/${selectedId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(updatedUser)
-        });
-
-        if (response.ok) {
-            alert("Usuário atualizado com sucesso!");
-            fetchEmployees(); // Refresh the user list
-        } else {
-            alert("Erro ao atualizar usuário.");
-        }
-    } catch (error) {
-        console.error("Erro ao atualizar usuário:", error);
-        alert("Falha na atualização do usuário.");
-    }
-}
-
-</script>
-
-
-
-
-  <script>
-
-    function showSection(sectionId) {
-        document.querySelectorAll('.section').forEach(section => {
-            section.style.display = 'none';
-        });
-        document.getElementById(sectionId).style.display = 'block';
-    }
+    fetchEmployeesOnLoad();
   </script>
-
-
 </body>
 </html>
