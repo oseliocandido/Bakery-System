@@ -8,7 +8,7 @@ const PORT = 3000;
 app.use(express.static(__dirname));
 
 app.get("/users", (req, res) => {
-    res.sendFile(path.join(__dirname, "user.html"));
+    res.sendFile(path.join(__dirname, "users","user.html"));
 });
 
 app.get("/home", (req, res) => {

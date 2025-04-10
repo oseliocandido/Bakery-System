@@ -12,7 +12,8 @@ router = APIRouter(tags=['users'], prefix='/users')
 @router.get("/")
 def get_all_users(
     db: psycopg.Connection = Depends(get_db),
-    status: str = Query(None, description="Filter users by status (optional, pass 'Ativo' or 'Inativo')")
+    status: str = Query(None, description="Filter users by status (optional, pass 'Ativo' or 'Inativo')"),
+    orderby: bool = Query(True, description="Default value")
 ) -> list[User]:
     """
     Fetch all users from the database, optionally filtered by status.
@@ -30,6 +31,8 @@ def get_all_users(
     if status:
         query += " WHERE status = %s"
     
+    query += " ORDER BY numero_identificacao"
+
     try:
         with db.cursor() as cursor:
             cursor.execute(query, (status,) if status else ())
