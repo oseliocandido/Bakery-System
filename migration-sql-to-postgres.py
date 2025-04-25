@@ -205,21 +205,83 @@ class ETLProcess:
 
 
     def run_migrations(self):
-       
         self.db.connect()
         for table_name, table_info in self.tables.items():
             try:
-                if table_name  in ('users','attendance'):
+                # Special handling for attendance to create attendance_test entries
+                if table_name == 'users':
                     continue
-                if table_name != 'balance':
+                if table_name == "attendance":
+                    self.migrate_attendance_to_test()
                     break
-                self.migrate_table(table_name, table_info)
-                logger.info("ETL process completed successfully for all tables.")
-            except Exception as e:
-                #logger.error(f"ETL process failed: {e}")
-                continue
+                if table_name not in ('users','attendance'):
+                    break
     
+                self.migrate_table(table_name, table_info)
+            except Exception as e:
+                logger.error(f"ETL process failed for {table_name}: {e}")  # Log the error for better debugging
+                continue
+                
+        logger.info("ETL process completed successfully for all tables.")
         self.db.close()
+        
+    def migrate_attendance_to_test(self):
+        """Migrates attendance data from SQLite to PostgreSQL attendance_test table, combining date and time."""
+        try:
+            sqlite_cursor = self.db.sqlite_conn.cursor()
+            pg_cursor = self.db.pg_conn.cursor()
+            
+            # Query for all attendance records
+            sqlite_cursor.execute("SELECT user_id, date, type, time FROM attendance;")
+            records = sqlite_cursor.fetchall()
+            
+            logger.info(f"Starting migration for attendance_test. Total records to process: {len(records)}.")
+            
+            transformed_data = []
+            for idx, row in enumerate(records):
+                user_id, date_str, attendance_type, time_str = row
+                
+                # Combine date and time into a single datetime object
+                if date_str and time_str:
+                    try:
+                        # Create a datetime string in the format "YYYY-MM-DD HH:MM:SS"
+                        datetime_str = f"{date_str} {time_str}"
+                        datetime_obj = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M")
+                    except Exception as e:
+                        logger.error(f"Error parsing datetime {date_str} {time_str}: {e}")
+                        continue  # Skip this record
+                else:
+                    logger.warning(f"Skipping record with missing date or time: {row}")
+                    continue
+                
+                transformed_row = (user_id, datetime_obj, attendance_type)
+                transformed_data.append(transformed_row)
+                
+                # Insert the batch when the batch size is reached or at the last record
+                if len(transformed_data) >= self.batch_size or idx == len(records) - 1:
+                    insert_query = "INSERT INTO attendance_test (user_id, datetime, type) VALUES (%s, %s, %s)"
+                    
+                    # Attempt to insert the transformed data into PostgreSQL
+                    for record in transformed_data:
+                        try:
+                            pg_cursor.execute(insert_query, record)
+                        except Exception as e:
+                            logger.error(f"Error inserting record {record} into attendance_test: {e}")
+                            continue  # Skip this record and continue processing others
+                    
+                    try:
+                        self.db.pg_conn.commit()  # Commit the batch to PostgreSQL
+                    except Exception as e:
+                        logger.error(f"Error committing batch for attendance_test: {e}")
+                    else:
+                        logger.info(f"Inserted batch of {len(transformed_data)} records into attendance_test.")
+                    
+                    transformed_data = []  # Reset the batch list for the next batch
+            
+            logger.info("Migration for attendance_test completed successfully.\n\n")
+        except Exception as e:
+            logger.error(f"Error migrating attendance to attendance_test: {e}")
+            raise
 
 if __name__ == "__main__":
     db_connector = DatabaseConnector("./letscheck.db", "postgresql://postgres:my_super_secret_password@localhost/postgres")

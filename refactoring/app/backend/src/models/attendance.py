@@ -1,12 +1,11 @@
 from pydantic import BaseModel
-from datetime import datetime, time
+from datetime import datetime
 
 
 class BaseAttendance(BaseModel):
     user_id: int
-    date: datetime
+    datetime: datetime
     type: str
-    time: time
 
 class Attendance(BaseAttendance):
     id: int

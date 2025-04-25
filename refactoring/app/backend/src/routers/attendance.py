@@ -2,7 +2,7 @@ import psycopg
 from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Optional
 
-from src.models.attendance import  BaseAttendance, Attendance
+from src.models.attendance import BaseAttendance, Attendance
 from src.services.database import get_db
 
 
