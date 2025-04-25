@@ -4,9 +4,9 @@ import { showMessage } from './utils.js';
 // Constants
 const API_BASE_URL = 'http://localhost:4200/api';
 
-// Search users function - Using startsWith instead of contains
+// Search users function - Using contains instead of startsWith
 function searchUsers(query) {
-  // This is a client-side search that uses startsWith instead of contains
+  // This is a client-side search that uses contains
   const rows = document.querySelectorAll('#employees-table-body tr');
   
   if (rows.length === 0) {
@@ -25,8 +25,8 @@ function searchUsers(query) {
     // Extract user name
     const userName = nameCell.querySelector('.user-name')?.textContent || '';
     
-    // Check if the userName starts with the search query (startsWith instead of contains)
-    if (userName.toLowerCase().startsWith(searchTermLower)) {
+    // Check if the userName contains the search query
+    if (userName.toLowerCase().includes(searchTermLower)) {
       row.style.display = '';
       matchCount++;
     } else {
@@ -70,12 +70,42 @@ function resetSearch() {
   document.dispatchEvent(new CustomEvent('resetSearch'));
 }
 
+// Reset filters to default values
+function resetFilters() {
+  const statusFilter = document.getElementById('status-filter');
+  const roleFilter = document.getElementById('role-filter');
+  const dateFilter = document.getElementById('date-filter');
+  
+  // Reset each filter to "all" option
+  if (statusFilter) statusFilter.value = 'all';
+  if (roleFilter) roleFilter.value = 'all';
+  if (dateFilter) dateFilter.value = 'all';
+  
+  // Show all rows that weren't hidden by search
+  const searchInput = document.getElementById('user-search');
+  const searchTerm = searchInput?.value?.trim() || '';
+  
+  if (searchTerm.length > 0) {
+    // Re-apply just the search filter
+    applySearchFilter(searchTerm);
+  } else {
+    // Show all rows
+    const rows = document.querySelectorAll('#employees-table-body tr');
+    rows.forEach(row => {
+      row.style.display = '';
+    });
+    updateUserCount();
+  }
+}
+
 // Function to update the user count badge
 function updateUserCount() {
   const totalRows = document.querySelectorAll('#employees-table-body tr').length;
+  const visibleRows = document.querySelectorAll('#employees-table-body tr[style=""]').length;
   const countBadge = document.getElementById('user-count-badge');
+  
   if (countBadge) {
-    countBadge.textContent = totalRows;
+    countBadge.textContent = visibleRows || totalRows;
   }
 }
 
@@ -103,8 +133,26 @@ function initializeFilters() {
   
   // Apply filters when changed
   [statusFilter, roleFilter, dateFilter].forEach(filter => {
-    filter?.addEventListener('change', applyAllFilters);
+    filter?.addEventListener('change', () => {
+      // Apply all filters
+      applyAllFilters();
+    });
   });
+  
+  // Add reset button to filters menu
+  if (filtersMenu && !document.getElementById('reset-filters-btn')) {
+    const resetButton = document.createElement('button');
+    resetButton.id = 'reset-filters-btn';
+    resetButton.className = 'reset-filters-btn';
+    resetButton.textContent = 'Reset Filters';
+    resetButton.addEventListener('click', resetFilters);
+    
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'filter-option filter-buttons';
+    buttonContainer.appendChild(resetButton);
+    
+    filtersMenu.appendChild(buttonContainer);
+  }
 }
 
 // Function to apply all selected filters
@@ -117,18 +165,34 @@ function applyAllFilters() {
   const roleValue = roleFilter?.value || 'all';
   const dateValue = dateFilter?.value || 'all';
   
+  console.log(`Applying filters - Status: ${statusValue}, Role: ${roleValue}, Date: ${dateValue}`);
+  
+  // First, reset display of all rows (to handle case when switching from one filter to another)
+  const allRows = document.querySelectorAll('#employees-table-body tr');
+  allRows.forEach(row => {
+    row.style.display = '';
+  });
+  
+  // Re-apply search filter first
+  const searchInput = document.getElementById('user-search');
+  const searchTerm = searchInput?.value?.trim() || '';
+  if (searchTerm.length > 0) {
+    searchUsers(searchTerm);
+  }
+  
+  // Now apply the dropdown filters
   const rows = document.querySelectorAll('#employees-table-body tr');
   let visibleCount = 0;
   
   rows.forEach(row => {
-    // Check if row was hidden by search
+    // Skip if already hidden by search
     if (row.style.display === 'none') return;
     
     let showRow = true;
     
     // Status filter
     if (statusValue !== 'all') {
-      const statusCell = row.querySelector('td:nth-child(5)'); // Status is in 5th column now
+      const statusCell = row.querySelector('td:nth-child(5)'); // Status is in 5th column 
       const statusBadge = statusCell?.querySelector('.status');
       const isActive = statusBadge?.classList.contains('active');
       
@@ -139,35 +203,35 @@ function applyAllFilters() {
     
     // Role filter
     if (showRow && roleValue !== 'all') {
-      const roleCell = row.querySelector('td:nth-child(4)'); // Role is in 4th column now
-      const roleText = roleCell?.textContent.toLowerCase() || '';
+      const roleCell = row.querySelector('td:nth-child(4)'); // Role is in 4th column
+      const roleText = roleCell?.textContent.toLowerCase().trim() || '';
       
-      if (!roleText.includes(roleValue)) {
+      // Compare exactly with the selected role value
+      if (roleText !== roleValue.toLowerCase()) {
         showRow = false;
       }
     }
     
-    // Date filter (simplifying for date_admissao)
+    // Date filter
     if (showRow && dateValue !== 'all') {
-      const dateCell = row.querySelector('td:nth-child(3)'); // Admission date is in 3rd column
+      const dateCell = row.querySelector('td:nth-child(3)'); // Using phone cell for now since we don't have date field visible
       const dateText = dateCell?.textContent || '';
       const today = new Date();
       
-      // Simplified date filtering
+      // This would need proper implementation when date_admissao field is available in the UI
       switch (dateValue) {
         case 'today':
-          showRow = dateText.includes(today.toLocaleDateString());
+          // For testing purposes - in real app would compare with today's date
+          showRow = true;
           break;
         case 'week':
-          // Simplified, would need proper date parsing in real implementation
           showRow = true;
           break;
         case 'month':
-          // Simplified, would need proper date parsing in real implementation
           showRow = true;
           break;
         case 'year':
-          showRow = dateText.includes(today.getFullYear());
+          showRow = true;
           break;
       }
     }
@@ -198,8 +262,33 @@ function initializeSearch() {
       debounceTimeout = setTimeout(() => {
         const searchTerm = searchInput.value.trim();
         applySearchFilter(searchTerm);
+        
+        // After applying search, re-apply any active filters
+        applyAllFilters();
       }, 300); // 300ms debounce
     });
+    
+    // Clear button for search
+    const searchContainer = document.querySelector('.search-container');
+    if (searchContainer && !document.querySelector('.search-clear')) {
+      const clearButton = document.createElement('button');
+      clearButton.className = 'search-clear';
+      clearButton.innerHTML = '<i class="fas fa-times"></i>';
+      clearButton.style.display = 'none';
+      
+      clearButton.addEventListener('click', () => {
+        searchInput.value = '';
+        clearButton.style.display = 'none';
+        resetSearch();
+        applyAllFilters(); // Re-apply filters after clearing search
+      });
+      
+      searchInput.addEventListener('input', () => {
+        clearButton.style.display = searchInput.value ? 'block' : 'none';
+      });
+      
+      searchContainer.appendChild(clearButton);
+    }
   }
   
   // Initialize filters
@@ -211,6 +300,7 @@ export {
   initializeSearch,
   searchUsers,
   resetSearch,
+  resetFilters,
   applySearchFilter,
   updateUserCount,
   applyAllFilters,

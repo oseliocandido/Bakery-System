@@ -1,6 +1,6 @@
 // Import necessary functions from our modules
 import { showMessage } from './utils.js';
-import { resetSearch, updateUserCount } from './search.js';
+import { resetSearch, updateUserCount, applyAllFilters } from './search.js';
 
 // API base URL - adjusted to match your FastAPI backend running on port 4200 with /api prefix
 const API_BASE_URL = 'http://localhost:4200/api';
@@ -24,9 +24,50 @@ async function fetchAllUsers() {
     const users = await response.json();
     displayUsers(users);
     updateUserCount(); // Update the user count badge
+    
+    // After loading users, populate role dropdown with unique roles
+    populateRoleDropdown(users);
   } catch (error) {
     showMessage(`Error: ${error.message}`, true);
   }
+}
+
+// Function to get distinct roles from users data
+function populateRoleDropdown(users) {
+  const roleFilter = document.getElementById('role-filter');
+  if (!roleFilter) return;
+  
+  // Extract all roles and keep only unique values
+  const roles = [...new Set(users.map(user => user.role))].filter(role => role);
+  
+  // Save current selection if any
+  const currentSelection = roleFilter.value;
+  
+  // Clear dropdown except the "All" option
+  while (roleFilter.options.length > 1) {
+    roleFilter.remove(1);
+  }
+  
+  // Add roles to dropdown
+  roles.sort().forEach(role => {
+    const option = document.createElement('option');
+    option.value = role.toLowerCase();
+    option.textContent = role;
+    roleFilter.appendChild(option);
+  });
+  
+  // Restore selected value if it still exists in the new options
+  if (currentSelection && currentSelection !== 'all') {
+    const exists = Array.from(roleFilter.options).some(opt => opt.value === currentSelection);
+    if (exists) {
+      roleFilter.value = currentSelection;
+    } else {
+      roleFilter.value = 'all';
+    }
+  }
+  
+  // Re-apply filters in case the role options changed
+  applyAllFilters();
 }
 
 // Function to display users in the table with the required field order
@@ -135,4 +176,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Export functions that might be needed by other modules
-export { fetchAllUsers };
+export { fetchAllUsers, populateRoleDropdown };

@@ -279,6 +279,35 @@ body {
   font-size: 14px;
 }
 
+/* Reset filters button styling */
+.reset-filters-btn {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 10px 15px;
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 10px;
+  color: #777;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.reset-filters-btn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+  border-color: #ccc;
+}
+
+.filter-buttons {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
 /* Add user button */
 .add-user-button {
   background-color: #7048e8;
