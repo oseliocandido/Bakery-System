@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bakery System - User Management</title>
+  <title>Bakery System - Edit User</title>
   <link rel="stylesheet" href="styles.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -14,7 +14,7 @@
     <i class="fas fa-bars"></i>
   </button>
 
-  <!-- Sidebar Navigation -->
+  <!-- Sidebar Navigation (Same structure as in user.html) -->
   <div class="sidebar">
     <div class="sidebar-header">
       <span class="sidebar-header-text">Avenida</span>
@@ -23,9 +23,7 @@
       </button>
     </div>
     
-  
     <ul class="sidebar-nav">
-  
       <li class="section-title">Avenida</li>
       <li class="sidebar-nav-item">
         <a href="#" class="sidebar-nav-link active has-submenu">
@@ -40,7 +38,7 @@
             <a href="user-create.html" class="submenu-link">Create User</a>
           </li>
           <li class="submenu-item">
-            <a href="user-edit.html" class="submenu-link">Edit User</a>
+            <a href="user-edit.html" class="submenu-link active">Edit User</a>
           </li>
         </ul>
       </li>
@@ -100,44 +98,81 @@
 
   <!-- Content Area -->
   <div class="content">
-    <!-- Users Section Header -->
-    <h1 class="content-header">Users</h1>
+    <!-- Section Header -->
+    <h1 class="content-header">Edit User</h1>
     
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-      <button id="btn-add">Add</button>
-      <button id="btn-edit">Edit</button>
-      <button id="btn-delete">Delete</button>
-      <button id="btn-search">Search</button>
+    <div id="edit-message-container"></div>
+    
+    <!-- User Selection -->
+    <div class="user-form">
+      <div class="form-group">
+        <label for="user-select">Select User to Edit</label>
+        <select id="user-select" class="form-control">
+          <option value="">Select a user</option>
+          <!-- User options will be dynamically populated -->
+        </select>
+      </div>
     </div>
     
-    <!-- Users Table -->
-    <table class="user-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="employees-table-body">
-        <!-- Employee data will be loaded here dynamically -->
-      </tbody>
-    </table>
+    <!-- Edit User Form - Initially Hidden -->
+    <div class="user-form" id="edit-form-container" style="display: none; margin-top: 20px;">
+      <form id="edit-user-form">
+        <input type="hidden" id="edit_id">
+        
+        <div class="form-group">
+          <label for="edit_complete_name">Full Name</label>
+          <input type="text" id="edit_complete_name" name="complete_name" placeholder="Enter full name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit_date_nascimento">Date of Birth</label>
+          <input type="date" id="edit_date_nascimento" name="date_nascimento" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit_date_admissao">Admission Date</label>
+          <input type="date" id="edit_date_admissao" name="date_admissao" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit_role">Role</label>
+          <select id="edit_role" name="role" required>
+            <option value="">Select a role</option>
+            <option value="Padeiro">Baker</option>
+            <option value="Auxiliar de Padeiro">Baker Assistant</option>
+            <option value="Atendente de Caixa">Cashier</option>
+            <option value="Cozinheira">Cook</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit_telephone_number">Telephone</label>
+          <input type="tel" id="edit_telephone_number" name="telephone_number" placeholder="Enter telephone number" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit_status">Status</label>
+          <select id="edit_status" name="status" required>
+            <option value="Ativo">Active</option>
+            <option value="Inativo">Inactive</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit_observation">Notes</label>
+          <textarea id="edit_observation" name="observation" rows="3" placeholder="Additional notes"></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" id="cancel-edit" onclick="window.location.href='user.html'">Cancel</button>
+          <button type="submit">Update User</button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <!-- Add User Modal/Section - Initially Hidden -->
-  <div id="add-user-modal" style="display: none;">
-    <!-- Add user form will go here -->
-  </div>
-
-  <!-- Edit User Modal/Section - Initially Hidden -->
-  <div id="edit-user-modal" style="display: none;">
-    <!-- Edit user form will go here -->
-  </div>
-
-  <script src="get_users.js"></script>
+  <script src="user-edit.js"></script>
   <script src="sidebar.js"></script>
 </body>
 </html>
