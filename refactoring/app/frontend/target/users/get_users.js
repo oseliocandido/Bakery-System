@@ -312,8 +312,34 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load users on page load
   fetchAllUsers();
   
+  // Search input functionality
+  const searchInput = document.getElementById('user-search');
+  const resetButton = document.querySelector('.invite-button');
+  
+  if (searchInput) {
+    // Search as user types (with debounce for performance)
+    let debounceTimeout;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        const searchTerm = searchInput.value.trim();
+        searchUsers(searchTerm);
+      }, 300); // 300ms debounce
+    });
+  }
+  
+  // Reset search button
+  if (resetButton) {
+    resetButton.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = ''; // Clear the search input
+      }
+      fetchAllUsers(); // Reset the table to show all users
+    });
+  }
+  
   // Add user button
-  addButton.addEventListener('click', () => {
+  addButton?.addEventListener('click', () => {
     addUserModal.innerHTML = buildAddUserForm();
     addUserModal.style.display = 'block';
     
@@ -397,14 +423,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Reset selection
       selectedUserId = null;
       selectedUserRow = null;
-    }
-  });
-  
-  // Search button
-  searchButton.addEventListener('click', () => {
-    const searchTerm = prompt('Enter search term:');
-    if (searchTerm) {
-      searchUsers(searchTerm);
     }
   });
 });
