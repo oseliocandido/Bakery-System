@@ -23,9 +23,7 @@
       </button>
     </div>
     
-  
     <ul class="sidebar-nav">
-  
       <li class="section-title">Avenida</li>
       <li class="sidebar-nav-item">
         <a href="#" class="sidebar-nav-link active has-submenu">
@@ -100,21 +98,68 @@
 
   <!-- Content Area -->
   <div class="content">
-    <!-- Users Section Header -->
-    <h1 class="content-header">Users</h1>
-    
-    <!-- Search Bar -->
-    <div class="search-container">
-      <input type="text" id="user-search" class="search-input" placeholder="Search">
-      <button class="invite-button">Reset</button>
+    <!-- Users Section Header with description -->
+    <div class="page-header">
+      <div class="page-title-section">
+        <h1 class="content-header">User management</h1>
+        <p class="page-description">Manage your team members and their account permissions here.</p>
+      </div>
     </div>
     
-    <!-- Users Table -->
+    <!-- Users count and tools section -->
+    <div class="users-header">
+      <div class="user-count">
+        <h2>All users <span id="user-count-badge">0</span></h2>
+      </div>
+      
+      <div class="user-tools">
+        <div class="search-container">
+          <input type="text" id="user-search" class="search-input" placeholder="Search">
+        </div>
+        
+        <div class="filters-dropdown">
+          <button id="filters-button" class="filters-button">
+            <i class="fas fa-filter"></i> Filters
+          </button>
+          <div id="filters-menu" class="filters-menu">
+            <div class="filter-option">
+              <label>Status</label>
+              <select id="status-filter">
+                <option value="all">All</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+            <div class="filter-option">
+              <label>Role</label>
+              <select id="role-filter">
+                <option value="all">All</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </select>
+            </div>
+            <div class="filter-option">
+              <label>Date added</label>
+              <select id="date-filter">
+                <option value="all">Any time</option>
+                <option value="today">Today</option>
+                <option value="week">This week</option>
+                <option value="month">This month</option>
+                <option value="year">This year</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Users Table with fields in the requested order -->
     <table class="user-table">
       <thead>
         <tr>
+          <th>ID</th>
           <th>Name</th>
-          <th>Email</th>
+          <th>Admission Date</th>
           <th>Role</th>
           <th>Status</th>
         </tr>
@@ -125,17 +170,15 @@
     </table>
   </div>
 
-  <!-- Add User Modal/Section - Initially Hidden -->
-  <div id="add-user-modal" style="display: none;">
-    <!-- Add user form will go here -->
-  </div>
-
   <!-- Edit User Modal/Section - Initially Hidden -->
   <div id="edit-user-modal" style="display: none;">
     <!-- Edit user form will go here -->
   </div>
 
-  <script src="get_users.js"></script>
+  <!-- Include the scripts as modules -->
+  <script src="utils.js" type="module"></script>
+  <script src="search.js" type="module"></script>
+  <script src="get_users.js" type="module"></script>
   <script src="sidebar.js"></script>
 </body>
 </html>
