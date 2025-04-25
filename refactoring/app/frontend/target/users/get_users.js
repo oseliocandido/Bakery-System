@@ -51,7 +51,7 @@ function displayUsers(users) {
       <td>
         <div class="user-name-info">
           <span class="user-name">${user.complete_name}</span>
-          <span class="user-email">${user.telephone_number}</span>
+          <span class="user-email">${joinDate}</span>
         </div>
         
         <!-- Hover detail panel with additional information -->
@@ -81,7 +81,7 @@ function displayUsers(users) {
           </div>
         </div>
       </td>
-      <td>${joinDate}</td>
+      <td>${user.telephone_number}</td>
       <td>${user.role}</td>
       <td><span class="status ${statusClass}">${statusText}</span></td>
     `;
