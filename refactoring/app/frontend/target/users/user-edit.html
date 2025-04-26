@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bakery System - Edit User</title>
+  <title>Sistema de Padaria - Editar Usuário</title>
   <link rel="stylesheet" href="styles.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -18,7 +18,7 @@
   <div class="sidebar">
     <div class="sidebar-header">
       <span class="sidebar-header-text">Avenida</span>
-      <button class="sidebar-toggle" title="Toggle Menu">
+      <button class="sidebar-toggle" title="Alternar Menu">
         <i class="fas fa-chevron-left"></i>
       </button>
     </div>
@@ -28,68 +28,34 @@
       <li class="sidebar-nav-item">
         <a href="#" class="sidebar-nav-link active has-submenu">
           <span class="sidebar-icon"><i class="fas fa-users"></i></span>
-          <span class="nav-text">Users</span>
+          <span class="nav-text">Funcionários</span>
         </a>
         <ul class="submenu active">
           <li class="submenu-item">
-            <a href="user.html" class="submenu-link">List Users</a>
+            <a href="user.html" class="submenu-link">Listar</a>
           </li>
           <li class="submenu-item">
-            <a href="user-create.html" class="submenu-link">Create User</a>
+            <a href="user-create.html" class="submenu-link">Registrar</a>
           </li>
           <li class="submenu-item">
-            <a href="user-edit.html" class="submenu-link active">Edit User</a>
+            <a href="user-edit.html" class="submenu-link active">Editar</a>
           </li>
         </ul>
       </li>
       <li class="sidebar-nav-item">
         <a href="../attendance/attendance.html" class="sidebar-nav-link has-submenu">
           <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-          <span class="nav-text">Attendance</span>
+          <span class="nav-text">Frequências</span>
         </a>
         <ul class="submenu">
           <li class="submenu-item">
-            <a href="../attendance/attendance.html" class="submenu-link">List Attendance</a>
+            <a href="../attendance/attendance.html" class="submenu-link">Listar</a>
           </li>
           <li class="submenu-item">
-            <a href="../attendance/attendance-create.html" class="submenu-link">Create Attendance</a>
+            <a href="../attendance/attendance-create.html" class="submenu-link">Registrar</a>
           </li>
           <li class="submenu-item">
-            <a href="../attendance/attendance-edit.html" class="submenu-link">Edit Attendance</a>
-          </li>
-        </ul>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../products/products.html" class="sidebar-nav-link has-submenu">
-          <span class="sidebar-icon"><i class="fas fa-bread-slice"></i></span>
-          <span class="nav-text">Products</span>
-        </a>
-        <ul class="submenu">
-          <li class="submenu-item">
-            <a href="../products/products.html" class="submenu-link">List Products</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../products/products-create.html" class="submenu-link">Add Product</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../products/inventory.html" class="submenu-link">Inventory</a>
-          </li>
-        </ul>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../financial/financial.html" class="sidebar-nav-link has-submenu">
-          <span class="sidebar-icon"><i class="fas fa-dollar-sign"></i></span>
-          <span class="nav-text">Financial</span>
-        </a>
-        <ul class="submenu">
-          <li class="submenu-item">
-            <a href="../financial/sales.html" class="submenu-link">Sales</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../financial/expenses.html" class="submenu-link">Expenses</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../financial/reports.html" class="submenu-link">Reports</a>
+            <a href="../attendance/attendance-edit.html" class="submenu-link">Editar</a>
           </li>
         </ul>
       </li>
@@ -99,16 +65,16 @@
   <!-- Content Area -->
   <div class="content">
     <!-- Section Header -->
-    <h1 class="content-header">Edit User</h1>
+    <h1 class="content-header">Editar Usuário</h1>
     
     <div id="edit-message-container"></div>
     
     <!-- User Selection -->
     <div class="user-form">
       <div class="form-group">
-        <label for="user-select">Select User to Edit</label>
+        <label for="user-select">Selecione o Usuário para Editar</label>
         <select id="user-select" class="form-control">
-          <option value="">Select a user</option>
+          <option value="">Selecione um usuário</option>
           <!-- User options will be dynamically populated -->
         </select>
       </div>
@@ -120,53 +86,53 @@
         <input type="hidden" id="edit_id">
         
         <div class="form-group">
-          <label for="edit_complete_name">Full Name</label>
-          <input type="text" id="edit_complete_name" name="complete_name" placeholder="Enter full name" required>
+          <label for="edit_complete_name">Nome Completo</label>
+          <input type="text" id="edit_complete_name" name="complete_name" placeholder="Digite o nome completo" required>
         </div>
         
         <div class="form-group">
-          <label for="edit_date_nascimento">Date of Birth</label>
+          <label for="edit_date_nascimento">Data de Nascimento</label>
           <input type="date" id="edit_date_nascimento" name="date_nascimento" required>
         </div>
         
         <div class="form-group">
-          <label for="edit_date_admissao">Admission Date</label>
+          <label for="edit_date_admissao">Data de Admissão</label>
           <input type="date" id="edit_date_admissao" name="date_admissao" required>
         </div>
         
         <div class="form-group">
-          <label for="edit_role">Role</label>
+          <label for="edit_role">Cargo</label>
           <select id="edit_role" name="role" required>
-            <option value="">Select a role</option>
-            <option value="Padeiro">Baker</option>
-            <option value="Auxiliar de Padeiro">Baker Assistant</option>
-            <option value="Atendente de Caixa">Cashier</option>
-            <option value="Cozinheira">Cook</option>
+            <option value="">Selecione um cargo</option>
+            <option value="Padeiro">Padeiro</option>
+            <option value="Auxiliar de Padeiro">Auxiliar de Padeiro</option>
+            <option value="Atendente de Caixa">Atendente de Caixa</option>
+            <option value="Cozinheira">Cozinheira</option>
             <option value="Admin">Admin</option>
           </select>
         </div>
         
         <div class="form-group">
-          <label for="edit_telephone_number">Telephone</label>
-          <input type="tel" id="edit_telephone_number" name="telephone_number" placeholder="Enter telephone number" required>
+          <label for="edit_telephone_number">Telefone</label>
+          <input type="tel" id="edit_telephone_number" name="telephone_number" placeholder="Digite o número de telefone" required>
         </div>
         
         <div class="form-group">
           <label for="edit_status">Status</label>
           <select id="edit_status" name="status" required>
-            <option value="Ativo">Active</option>
-            <option value="Inativo">Inactive</option>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
           </select>
         </div>
         
         <div class="form-group">
-          <label for="edit_observation">Notes</label>
-          <textarea id="edit_observation" name="observation" rows="3" placeholder="Additional notes"></textarea>
+          <label for="edit_observation">Observações</label>
+          <textarea id="edit_observation" name="observation" rows="3" placeholder="Observações adicionais"></textarea>
         </div>
         
         <div class="form-actions">
-          <button type="button" id="cancel-edit" onclick="window.location.href='user.html'">Cancel</button>
-          <button type="submit">Update User</button>
+          <button type="button" id="cancel-edit" onclick="window.location.href='user.html'">Cancelar</button>
+          <button type="submit">Atualizar Usuário</button>
         </div>
       </form>
     </div>

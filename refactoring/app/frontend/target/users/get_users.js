@@ -99,7 +99,7 @@ function displayUsers(users) {
     
     // Create the status class
     const statusClass = user.status === 'Ativo' ? 'active' : 'inactive';
-    const statusText = user.status === 'Ativo' ? 'Active' : 'Inactive';
+    const statusText = user.status === 'Ativo' ? 'Ativo' : 'Inativo';
     
     // Format dates
     const joinDate = formatDate(user.date_admissao);
@@ -129,17 +129,12 @@ function displayUsers(users) {
           </div>
           
           <div class="detail-section">
-            <h4>Date of Birth</h4>
+            <h4>Data de Nascimento</h4>
             <p>${birthDate}</p>
           </div>
           
           <div class="detail-section">
-            <h4>Email/Phone</h4>
-            <p>${formattedPhone}</p>
-          </div>
-          
-          <div class="detail-section">
-            <h4>Observation</h4>
+            <h4>Observação</h4>
             <p>${user.observation || 'No notes available'}</p>
           </div>
         </div>

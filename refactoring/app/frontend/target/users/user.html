@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bakery System - User Management</title>
+  <title>Sistema de Padaria - Gerenciamento de Usuários</title>
   <link rel="stylesheet" href="styles.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -18,7 +18,7 @@
   <div class="sidebar">
     <div class="sidebar-header">
       <span class="sidebar-header-text">Avenida</span>
-      <button class="sidebar-toggle" title="Toggle Menu">
+      <button class="sidebar-toggle" title="Alternar Menu">
         <i class="fas fa-chevron-left"></i>
       </button>
     </div>
@@ -28,69 +28,39 @@
       <li class="sidebar-nav-item">
         <a href="#" class="sidebar-nav-link active has-submenu">
           <span class="sidebar-icon"><i class="fas fa-users"></i></span>
-          <span class="nav-text">Users</span>
+          <span class="nav-text">Funcionários</span>
         </a>
         <ul class="submenu active">
           <li class="submenu-item">
-            <a href="user.html" class="submenu-link">List Users</a>
+            <a href="user.html" class="submenu-link">Listar</a>
           </li>
           <li class="submenu-item">
-            <a href="user-create.html" class="submenu-link">Create User</a>
+            <a href="user-create.html" class="submenu-link">Registrar</a>
           </li>
           <li class="submenu-item">
-            <a href="user-edit.html" class="submenu-link">Edit User</a>
+            <a href="user-edit.html" class="submenu-link">Editar</a>
           </li>
         </ul>
       </li>
       <li class="sidebar-nav-item">
         <a href="../attendance/attendance.html" class="sidebar-nav-link has-submenu">
           <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-          <span class="nav-text">Attendance</span>
+          <span class="nav-text">Frequências</span>
         </a>
         <ul class="submenu">
           <li class="submenu-item">
-            <a href="../attendance/attendance.html" class="submenu-link">List Attendance</a>
+            <a href="../attendance/attendance.html" class="submenu-link">Listar</a>
           </li>
           <li class="submenu-item">
-            <a href="../attendance/attendance-create.html" class="submenu-link">Create Attendance</a>
+            <a href="../attendance/attendance-create.html" class="submenu-link">Registrar</a>
           </li>
           <li class="submenu-item">
-            <a href="../attendance/attendance-edit.html" class="submenu-link">Edit Attendance</a>
+            <a href="../attendance/attendance-edit.html" class="submenu-link">Editar</a>
           </li>
         </ul>
       </li>
-      <li class="sidebar-nav-item">
-        <a href="../products/products.html" class="sidebar-nav-link has-submenu">
-          <span class="sidebar-icon"><i class="fas fa-bread-slice"></i></span>
-          <span class="nav-text">Products</span>
-        </a>
-        <ul class="submenu">
-          <li class="submenu-item">
-            <a href="../products/products.html" class="submenu-link">List Products</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../products/products-create.html" class="submenu-link">Add Product</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../products/inventory.html" class="submenu-link">Inventory</a>
-          </li>
         </ul>
       </li>
-      <li class="sidebar-nav-item">
-        <a href="../financial/financial.html" class="sidebar-nav-link has-submenu">
-          <span class="sidebar-icon"><i class="fas fa-dollar-sign"></i></span>
-          <span class="nav-text">Financial</span>
-        </a>
-        <ul class="submenu">
-          <li class="submenu-item">
-            <a href="../financial/sales.html" class="submenu-link">Sales</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../financial/expenses.html" class="submenu-link">Expenses</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../financial/reports.html" class="submenu-link">Reports</a>
-          </li>
         </ul>
       </li>
     </ul>
@@ -101,39 +71,39 @@
     <!-- Users Section Header with description -->
     <div class="page-header">
       <div class="page-title-section">
-        <h1 class="content-header">User management</h1>
-        <p class="page-description">Manage your team members and their account permissions here.</p>
+        <h1 class="content-header">Gerenciamento de Usuários</h1>
+        <p class="page-description">Gerencie os membros da sua equipe e suas permissões de conta aqui.</p>
       </div>
     </div>
     
     <!-- Users count and tools section -->
     <div class="users-header">
       <div class="user-count">
-        <h2>All users <span id="user-count-badge">0</span></h2>
+        <h2>Todos os usuários <span id="user-count-badge">0</span></h2>
       </div>
       
       <div class="user-tools">
         <div class="search-container">
-          <input type="text" id="user-search" class="search-input" placeholder="Search">
+          <input type="text" id="user-search" class="search-input" placeholder="Pesquisar">
         </div>
         
         <div class="filters-dropdown">
           <button id="filters-button" class="filters-button">
-            <i class="fas fa-filter"></i> Filters
+            <i class="fas fa-filter"></i> Filtros
           </button>
           <div id="filters-menu" class="filters-menu">
             <div class="filter-option">
               <label>Status</label>
               <select id="status-filter">
-                <option value="all">All</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="all">Todos</option>
+                <option value="active">Ativo</option>
+                <option value="inactive">Inativo</option>
               </select>
             </div>
             <div class="filter-option">
               <label>Cargo</label>
               <select id="role-filter">
-                <option value="all">All</option>
+                <option value="all">Todos</option>
                 <!-- Roles will be dynamically populated from API data -->
               </select>
             </div>
