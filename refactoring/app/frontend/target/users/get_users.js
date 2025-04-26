@@ -14,6 +14,25 @@ function formatDate(isoDate) {
   return new Date(isoDate).toLocaleDateString();
 }
 
+// Format telephone number to (XX) X XXXX XXXX format
+function formatPhoneNumber(phoneNumber) {
+  if (!phoneNumber) return '';
+  
+  // Clean the number of any non-digit characters
+  const cleanNumber = phoneNumber.replace(/\D/g, '');
+  
+  if (cleanNumber.length === 11) {
+    // Format: (XX) X XXXX XXXX
+    return `(${cleanNumber.substring(0, 2)}) ${cleanNumber.substring(2, 3)} ${cleanNumber.substring(3, 7)} ${cleanNumber.substring(7, 11)}`;
+  } else if (cleanNumber.length === 10) {
+    // Format: (XX) XXXX XXXX (for numbers without the 9 prefix)
+    return `(${cleanNumber.substring(0, 2)}) ${cleanNumber.substring(2, 6)} ${cleanNumber.substring(6, 10)}`;
+  }
+  
+  // Return original if it doesn't match expected formats
+  return phoneNumber;
+}
+
 // API function to fetch all users
 async function fetchAllUsers() {
   try {
@@ -86,6 +105,9 @@ function displayUsers(users) {
     const joinDate = formatDate(user.date_admissao);
     const birthDate = formatDate(user.date_nascimento);
     
+    // Format telephone number
+    const formattedPhone = formatPhoneNumber(user.telephone_number);
+    
     // Create row HTML with data in the required order
     row.innerHTML = `
       <td>${user.numero_identificacao}</td>
@@ -113,7 +135,7 @@ function displayUsers(users) {
           
           <div class="detail-section">
             <h4>Email/Phone</h4>
-            <p>${user.telephone_number}</p>
+            <p>${formattedPhone}</p>
           </div>
           
           <div class="detail-section">
@@ -122,7 +144,7 @@ function displayUsers(users) {
           </div>
         </div>
       </td>
-      <td>${user.telephone_number}</td>
+      <td>${formattedPhone}</td>
       <td>${user.role}</td>
       <td><span class="status ${statusClass}">${statusText}</span></td>
     `;
