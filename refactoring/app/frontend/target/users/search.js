@@ -246,27 +246,7 @@ function initializeSearch() {
       }, 300); // 300ms debounce
     });
     
-    // Clear button for search
-    const searchContainer = document.querySelector('.search-container');
-    if (searchContainer && !document.querySelector('.search-clear')) {
-      const clearButton = document.createElement('button');
-      clearButton.className = 'search-clear';
-      clearButton.innerHTML = '<i class="fas fa-times"></i>';
-      clearButton.style.display = 'none';
-      
-      clearButton.addEventListener('click', () => {
-        searchInput.value = '';
-        clearButton.style.display = 'none';
-        resetSearch();
-        applyAllFilters(); // Re-apply filters after clearing search
-      });
-      
-      searchInput.addEventListener('input', () => {
-        clearButton.style.display = searchInput.value ? 'block' : 'none';
-      });
-      
-      searchContainer.appendChild(clearButton);
-    }
+  
   }
   
   // Initialize filters
