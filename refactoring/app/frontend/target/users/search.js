@@ -76,10 +76,10 @@ function resetFilters() {
   const roleFilter = document.getElementById('role-filter');
   const dateFilter = document.getElementById('date-filter');
   
-  // Reset each filter to "all" option
-  if (statusFilter) statusFilter.value = 'all';
-  if (roleFilter) roleFilter.value = 'all';
-  if (dateFilter) dateFilter.value = 'all';
+  // Reset each filter to "Todos" option
+  if (statusFilter) statusFilter.value = '';
+  if (roleFilter) roleFilter.value = '';
+  if (dateFilter) dateFilter.value = '';
   
   // Show all rows that weren't hidden by search
   const searchInput = document.getElementById('user-search');
@@ -96,6 +96,7 @@ function resetFilters() {
     });
     updateUserCount();
   }
+  
 }
 
 // Function to update the user count badge
@@ -212,29 +213,6 @@ function applyAllFilters() {
       }
     }
     
-    // Date filter
-    if (showRow && dateValue !== 'all') {
-      const dateCell = row.querySelector('td:nth-child(3)'); // Using phone cell for now since we don't have date field visible
-      const dateText = dateCell?.textContent || '';
-      const today = new Date();
-      
-      // This would need proper implementation when date_admissao field is available in the UI
-      switch (dateValue) {
-        case 'today':
-          // For testing purposes - in real app would compare with today's date
-          showRow = true;
-          break;
-        case 'week':
-          showRow = true;
-          break;
-        case 'month':
-          showRow = true;
-          break;
-        case 'year':
-          showRow = true;
-          break;
-      }
-    }
     
     // Show or hide the row based on filter results
     if (showRow) {
