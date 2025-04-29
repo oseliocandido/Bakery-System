@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Padaria - Gerenciamento de Usuários</title>
+  <title>Sistema de Padaria - Gerenciamento de Funcionários</title>
   <link rel="stylesheet" href="styles.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -14,109 +14,64 @@
     <i class="fas fa-bars"></i>
   </button>
 
-  <!-- Sidebar Navigation -->
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <span class="sidebar-header-text">Avenida</span>
-      <button class="sidebar-toggle" title="Alternar Menu">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-    </div>
-    
-    <ul class="sidebar-nav">
-      <li class="section-title">Avenida</li>
-      <li class="sidebar-nav-item">
-        <a href="#" class="sidebar-nav-link active has-submenu">
-          <span class="sidebar-icon"><i class="fas fa-users"></i></span>
-          <span class="nav-text">Funcionários</span>
-        </a>
-        <ul class="submenu active">
-          <li class="submenu-item">
-            <a href="user.html" class="submenu-link">Listar</a>
-          </li>
-          <li class="submenu-item">
-            <a href="user-create.html" class="submenu-link">Registrar</a>
-          </li>
-          <li class="submenu-item">
-            <a href="user-edit.html" class="submenu-link">Editar</a>
-          </li>
-        </ul>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../attendance/attendance.html" class="sidebar-nav-link has-submenu">
-          <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-          <span class="nav-text">Frequências</span>
-        </a>
-        <ul class="submenu">
-          <li class="submenu-item">
-            <a href="../attendance/attendance.html" class="submenu-link">Listar</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../attendance/attendance-create.html" class="submenu-link">Registrar</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../attendance/attendance-edit.html" class="submenu-link">Editar</a>
-          </li>
-        </ul>
-      </li>
-        </ul>
-      </li>
-        </ul>
-      </li>
-    </ul>
-  </div>
+  <!-- Sidebar container - will be populated by template-loader.js -->
+  <div id="sidebar-container"></div>
 
   <!-- Content Area -->
   <div class="content">
     <!-- Users Section Header with description -->
     <div class="page-header">
       <div class="page-title-section">
-        <h1 class="content-header">Gerenciamento de Usuários</h1>
-        <p class="page-description">Gerencie os membros da sua equipe e suas permissões de conta aqui.</p>
+        <h1 class="content-header">Gerenciamento de Funcionários</h1>
+        <p class="page-description">Visualize e gerencie todos os funcionários do sistema. Use os filtros para encontrar rapidamente usuários específicos ou <a href="user-create.html" class="action-link">adicione um novo funcionário</a>.</p>
       </div>
     </div>
     
     <!-- Users count and tools section -->
     <div class="users-header">
       <div class="user-count">
-        <h2>Todos os usuários <span id="user-count-badge">0</span></h2>
+        <h2>Funcionários <span id="user-count-badge">0</span></h2>
       </div>
       
       <div class="user-tools">
         <div class="search-container">
-          <input type="text" id="user-search" class="search-input" placeholder="Pesquisar">
+          <input type="text" id="user-search" class="search-input" placeholder="Buscar funcionários...">
         </div>
         
         <div class="filters-dropdown">
-          <button id="filters-button" class="filters-button">
+          <button class="filters-button" id="filters-button">
             <i class="fas fa-filter"></i> Filtros
           </button>
-          <div id="filters-menu" class="filters-menu">
+          
+          <div class="filters-menu" id="filters-menu">
             <div class="filter-option">
-              <label>Status</label>
+              <label for="status-filter">Status</label>
               <select id="status-filter">
-                <option value="all">Todos</option>
-                <option value="active">Ativo</option>
-                <option value="inactive">Inativo</option>
+                <option value="">Todos</option>
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
               </select>
             </div>
+            
             <div class="filter-option">
-              <label>Cargo</label>
+              <label for="role-filter">Cargo</label>
               <select id="role-filter">
-                <option value="all">Todos</option>
-                <!-- Roles will be dynamically populated from API data -->
+                <option value="">Todos</option>
+                <!-- Will be populated dynamically -->
               </select>
             </div>
-          </div>
-        </div>
+            
+         
+        <a href="user-create.html" class="add-user-button">
+          <i class="fas fa-plus"></i> Novo Funcionário
+        </a>
       </div>
     </div>
     
-    <!-- Users Table with fields in the requested order -->
+    <!-- Users table -->
     <table class="user-table">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Nome</th>
           <th>Telefone</th>
           <th>Cargo</th>
@@ -134,10 +89,20 @@
     <!-- Edit user form will go here -->
   </div>
 
-  <!-- Include the scripts as modules -->
+  <!-- Include the template loader first -->
+  <script src="/js/template_loader.js" type="module"></script>
+  <script type="module">
+    import templateLoader from '/js/template_loader.js';
+    
+    // Initialize the template system
+    document.addEventListener('DOMContentLoaded', () => {
+      templateLoader.initializeLayout();
+    });
+  </script>
+  
+  <!-- Include the other scripts as modules -->
   <script src="utils.js" type="module"></script>
   <script src="search.js" type="module"></script>
   <script src="get_users.js" type="module"></script>
-  <script src="sidebar.js"></script>
 </body>
 </html>
