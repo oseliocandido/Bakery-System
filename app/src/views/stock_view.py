@@ -201,7 +201,7 @@ class StockView:
                             
                             # Input Quantity
                             with col1:
-                                quantity = st.number_input(f"Quantidade", min_value=0.5, step=1, key=f"quant_{index}")
+                                quantity = st.number_input(f"Quantidade", min_value=0.5, step=1.0, key=f"quant_{index}")
                             with col2:
                                 unit_price = st.number_input(f"Preço Unitário", value=row[current_price_column], disabled = True, key=f"price_{index}")
                             st.write('')
