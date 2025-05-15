@@ -24,6 +24,7 @@ ATTEDANCES
  -- Attendances of specific user
    -- By entrada, saida, etc
    -- Heatmap com dias que falataram
+- Filter is broken related to stauts
 
 ### Code
 <footer>

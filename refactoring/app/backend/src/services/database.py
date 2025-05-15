@@ -12,12 +12,12 @@ class DictRowFactory:
 
 
 def get_db():
-    conn = psycopg.connect(
+    try:
+        conn = psycopg.connect(
         "postgresql://postgres:my_super_secret_password@postgres_dev/postgres",
         row_factory=DictRowFactory,
         autocommit=True
     )
-    try:
         yield conn
     finally:
         conn.close()

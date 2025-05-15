@@ -1,6 +1,7 @@
 import psycopg
 from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Optional
+from datetime import datetime
 
 from src.models.attendance import BaseAttendance, Attendance
 from src.services.database import get_db
@@ -29,8 +30,8 @@ def get_attendances(
         A list of attendance records for the user.
     """
     query = """
-        SELECT user_id, date, type, time
-        FROM attendance
+        SELECT id, user_id, datetime, type
+        FROM attendance_test
         WHERE user_id = %s
     """
     params = [id_number]
@@ -44,7 +45,7 @@ def get_attendances(
         params.append(type)
 
     try:
-        with db.cursor() as cursor:
+        with db.cursor(row_factory=psycopg.rows.dict_row) as cursor:
             cursor.execute(query, tuple(params))
             rows = cursor.fetchall()
 
@@ -57,109 +58,181 @@ def get_attendances(
         raise HTTPException(status_code=500, detail=f"Error fetching attendances: {str(e)}")
 
 
+@router.get("/by-period")
+def get_attendances_by_period(
+    id_number: int,
+    start_date: str = Query(..., description="Start date (YYYY-MM-DD)"),
+    end_date: str = Query(..., description="End date (YYYY-MM-DD)"),
+    db: psycopg.Connection = Depends(get_db),
+) -> list[BaseAttendance]:
+    """
+    Get attendances for a specific user within a date range.
+
+    Args:
+        id_number: The ID of the user.
+        start_date: The start date of the period (YYYY-MM-DD).
+        end_date: The end date of the period (YYYY-MM-DD).
+        db: Database connection object.
+
+    Returns:
+        A list of attendance records for the user within the specified period.
+    """
+    query = """
+        SELECT id, user_id, datetime, type
+        FROM attendance_test
+        WHERE user_id = %s
+        AND date BETWEEN %s AND %s
+    """
+    
+    try:
+        with db.cursor(row_factory=psycopg.rows.dict_row) as cursor:
+            cursor.execute(query, (id_number, start_date, end_date))
+            rows = cursor.fetchall()
+
+        if not rows:
+            raise HTTPException(status_code=404, detail="No attendances found for this user within the specified period.")
+        
+        return [BaseAttendance(**row) for row in rows]
+
+    except psycopg.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching attendances by period: {str(e)}")
+
 
 @router.post("/")
-def create_attendance(attendance: BaseAttendance, db: psycopg.Connection = Depends(get_db)) -> dict:
+def create_attendance(
+    id_number: int,
+    attendance: BaseAttendance,
+    db: psycopg.Connection = Depends(get_db)
+) -> dict:
     """
     Create a new attendance record for a specific user.
 
     Args:
-        user_id: The ID of the user.
-        date: The date of the attendance.
-        type: The type of attendance.
-        time: The time of the attendance.
+        id_number: The ID of the user.
+        attendance: The attendance data.
         db: Database connection object.
 
     Returns:
         A message indicating success or failure.
     """
+    if attendance.user_id != id_number:
+        raise HTTPException(status_code=400, detail="User ID in path must match user ID in request body")
+        
     insert_query = """
-        INSERT INTO attendance (user_id, date, type, time)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO attendance_test (user_id, datetime, type)
+        VALUES (%s, %s, %s)
+        RETURNING id
     """
 
     try:
         with db.cursor() as cursor:
-            cursor.execute(insert_query, (attendance.user_id, attendance.date, attendance.type, attendance.time))
-        return {"message": "Attendance created."}
+            cursor.execute(insert_query, (
+                attendance.user_id, 
+                attendance.datetime, 
+                attendance.type
+            ))
+            attendance_id = cursor.fetchone()[0]
+        db.commit()
+        return {"message": "Attendance created successfully", "id": attendance_id}
+
+    except psycopg.errors.UniqueViolation:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Attendance already exists for this user, type, and date")
+    except psycopg.Error as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error creating attendance: {str(e)}")
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+    #FIX THIS: Add a check to see if the user exists in the database before creating an attendance record
+
+@router.put("/{attendance_id}")
+def update_attendance(
+    id_number: int,
+    attendance_id: int,
+    attendance: BaseAttendance,
+    db: psycopg.Connection = Depends(get_db)
+) -> dict:
+    """
+    Modify an existing attendance record for a specific user.
+
+    Args:
+        id_number: The ID of the user.
+        attendance_id: The ID of the attendance to update.
+        attendance: The updated attendance data.
+        db: Database connection object.
+
+    Returns:
+        A message indicating success or failure.
+    """
+    if attendance.user_id != id_number:
+        raise HTTPException(status_code=400, detail="User ID in path must match user ID in request body")
+        
+    update_query = """
+        UPDATE attendance_test
+        SET datetime = %s, type = %s
+        WHERE id = %s AND user_id = %s
+        RETURNING id
+    """
+
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(update_query, (
+                attendance.datetime, 
+                attendance.type, 
+                attendance_id, 
+                id_number
+            ))
+            row = cursor.fetchone()
+
+        if not row:
+            raise HTTPException(status_code=404, detail="Attendance not found or does not belong to this user")
+
+        db.commit()
+        return {"message": f"Attendance with ID {attendance_id} updated successfully"}
+
+    except psycopg.errors.UniqueViolation:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Another attendance already exists with the same user, type, and date")
+    except psycopg.Error as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error updating attendance: {str(e)}")
+
+
+@router.delete("/{attendance_id}")
+def delete_attendance(
+    id_number: int,
+    attendance_id: int,
+    db: psycopg.Connection = Depends(get_db)
+) -> dict:
+    """
+    Delete an attendance record for a specific user.
+
+    Args:
+        id_number: The ID of the user.
+        attendance_id: The ID of the attendance to delete.
+        db: Database connection object.
+
+    Returns:
+        A message indicating success or failure.
+    """
+    delete_query = """
+        DELETE FROM attendance_test
+        WHERE id = %s AND user_id = %s
+        RETURNING id
+    """
+
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(delete_query, (attendance_id, id_number))
+            row = cursor.fetchone()
+
+        if not row:
+            raise HTTPException(status_code=404, detail="Attendance not found or does not belong to this user")
+
+        db.commit()
+        return {"message": f"Attendance with ID {attendance_id} deleted successfully"}
 
     except psycopg.Error as e:
-        raise HTTPException(status_code=500, detail=f"Error creating attendance: {str(e)}")
-
-
-
-# @router.put("/{attendance_id}")
-# def update_attendance(
-#     user_id: int, 
-#     attendance_id: int, 
-#     date: date, 
-#     type: str, 
-#     time: time, 
-#     db: psycopg.Connection  = Depends(get_db)
-# ):
-#     """
-#     Modify an existing attendance record for a specific user.
-
-#     Args:
-#         user_id: The ID of the user.
-#         attendance_id: The ID of the attendance to update.
-#         date: The new date for the attendance.
-#         type: The new type for the attendance.
-#         time: The new time for the attendance.
-#         db: Database connection object.
-
-#     Returns:
-#         A message indicating success or failure.
-#     """
-#     update_query = """
-#         UPDATE attendance
-#         SET date = %s, type = %s, time = %s
-#         WHERE user_id = %s 
-#         RETURNING date, type;
-#     """
-
-#     try:
-#         with db.cursor() as cursor:
-#             cursor.execute(update_query, (date, type, time, user_id, attendance_id))
-#             row = cursor.fetchone()
-
-#         if not row:
-#             raise HTTPException(status_code=404, detail="Attendance not found")
-
-#         return {"message": f"Attendance with ID {attendance_id} updated"}
-
-#     except psycopg.Error as e:
-#         raise HTTPException(status_code=500, detail=f"Error updating attendance: {str(e)}")
-
-
-# @router.delete("/{attendance_id}")
-# def delete_attendance(user_id: int, attendance_id: int, db: psycopg.Connection  = Depends(get_db)):
-#     """
-#     Delete an attendance record for a specific user.
-
-#     Args:
-#         user_id: The ID of the user.
-#         attendance_id: The ID of the attendance to delete.
-#         db: Database connection object.
-
-#     Returns:
-#         A message indicating success or failure.
-#     """
-#     delete_query = """
-#         DELETE FROM attendance
-#         WHERE user_id = %s AND id = %s
-#         RETURNING id;
-#     """
-
-#     try:
-#         with db.cursor() as cursor:
-#             cursor.execute(delete_query, (user_id, attendance_id))
-#             row = cursor.fetchone()
-
-#         if not row:
-#             raise HTTPException(status_code=404, detail="Attendance not found")
-
-#         return {"message": f"Attendance with ID {attendance_id} deleted"}
-
-#     except psycopg.Error as e:
-#         raise HTTPException(status_code=500, detail=f"Error deleting attendance: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error deleting attendance: {str(e)}")
