@@ -1,3 +1,9 @@
+// Import utils
+import { showMessage } from './utils.js';
+
+// Constants
+const API_BASE_URL = 'http://localhost:4200/api';
+
 // Search users function - Using contains instead of startsWith
 function searchUsers(query) {
   // This is a client-side search that uses contains
@@ -191,7 +197,7 @@ function applyAllFilters() {
       const statusBadge = statusCell?.querySelector('.status');
       const isActive = statusBadge?.classList.contains('active');
       
-      if ((statusValue === 'Ativo' && !isActive) || (statusValue === 'Inativo' && isActive)) {
+      if ((statusValue === 'active' && !isActive) || (statusValue === 'inactive' && isActive)) {
         showRow = false;
       }
     }
@@ -256,6 +262,7 @@ export {
   applySearchFilter,
   updateUserCount,
   applyAllFilters,
+  showMessage
 };
 
 // Initialize when DOM is loaded

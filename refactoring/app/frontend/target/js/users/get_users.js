@@ -1,6 +1,6 @@
 // Import necessary functions from our modules
-import { showMessage } from '../utils/utils.js';
-import { updateUserCount, applyAllFilters } from '../utils/search.js';
+import { showMessage } from '../utils//utils.js';
+import { resetSearch, updateUserCount, applyAllFilters } from '../utils/search.js';
 
 // API base URL - adjusted to match your FastAPI backend running on port 4200 with /api prefix
 const API_BASE_URL = 'http://localhost:4200/api';
@@ -148,10 +148,48 @@ function displayUsers(users) {
   });
 }
 
+// Function to delete a user
+async function deleteUser(userId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to delete user');
+    }
+    
+    showMessage('User deleted successfully');
+    fetchAllUsers(); // Refresh the user list
+    return true;
+  } catch (error) {
+    showMessage(`Error: ${error.message}`, true);
+    return false;
+  }
+}
+
+// Function to get user by ID
+async function getUser(userId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user details');
+    }
+    return await response.json();
+  } catch (error) {
+    showMessage(`Error: ${error.message}`, true);
+    return null;
+  }
+}
+
 // Event listeners
 document.addEventListener('DOMContentLoaded', () => {
   // Load users on page load
   fetchAllUsers();
+
+  // Listen for reset search event
+  document.addEventListener('resetSearch', fetchAllUsers);
 });
 
 // Export functions that might be needed by other modules
