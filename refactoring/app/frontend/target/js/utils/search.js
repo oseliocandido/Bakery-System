@@ -197,7 +197,7 @@ function applyAllFilters() {
       const statusBadge = statusCell?.querySelector('.status');
       const isActive = statusBadge?.classList.contains('active');
       
-      if ((statusValue === 'active' && !isActive) || (statusValue === 'inactive' && isActive)) {
+      if ((statusValue === 'Ativo' && !isActive) || (statusValue === 'Inativo' && isActive)) {
         showRow = false;
       }
     }
