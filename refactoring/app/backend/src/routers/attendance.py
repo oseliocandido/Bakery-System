@@ -199,6 +199,59 @@ def update_attendance(
         raise HTTPException(status_code=500, detail=f"Error updating attendance: {str(e)}")
 
 
+@router.put("/{attendance_id}")
+def update_attendance(
+    id_number: int,
+    attendance_id: int,
+    attendance: BaseAttendance,
+    db: psycopg.Connection = Depends(get_db)
+) -> dict:
+    """
+    Modify an existing attendance record for a specific user.
+
+    Args:
+        id_number: The ID of the user.
+        attendance_id: The ID of the attendance to update.
+        attendance: The updated attendance data.
+        db: Database connection object.
+
+    Returns:
+        A message indicating success or failure.
+    """
+    if attendance.user_id != id_number:
+        raise HTTPException(status_code=400, detail="User ID in path must match user ID in request body")
+        
+    update_query = """
+        UPDATE attendance_test
+        SET datetime = %s, type = %s
+        WHERE id = %s AND user_id = %s
+        RETURNING id
+    """
+
+    try:
+        with db.cursor() as cursor:
+            cursor.execute(update_query, (
+                attendance.datetime, 
+                attendance.type, 
+                attendance_id, 
+                id_number
+            ))
+            row = cursor.fetchone()
+
+        if not row:
+            raise HTTPException(status_code=404, detail="Attendance not found or does not belong to this user")
+
+        db.commit()
+        return {"message": f"Attendance with ID {attendance_id} updated successfully"}
+
+    except psycopg.errors.UniqueViolation:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Another attendance already exists with the same user, type, and date")
+    except psycopg.Error as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error updating attendance: {str(e)}")
+
+
 @router.delete("/{attendance_id}")
 def delete_attendance(
     id_number: int,

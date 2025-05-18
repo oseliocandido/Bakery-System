@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Padaria - Registro de Frequências</title>
+  <link rel="stylesheet" href="../users/styles.css">
+  <link rel="stylesheet" href="attendance.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+  <!-- Mobile menu toggle button - visible on small screens -->
+  <button class="mobile-menu-toggle" style="display: none;">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar container - will be populated by template-loader.js -->
+  <div id="sidebar-container"></div>
+
+  <!-- Content Area -->
+  <div class="content">
+    <!-- Section Header -->
+    <div class="page-header">
+      <div class="page-title-section">
+        <h1 class="content-header">Registro de Frequências</h1>
+        <p class="page-description">Visualize, filtre e gerencie o registro de ponto dos funcionários. Use os filtros para consultar períodos específicos.</p>
+      </div>
+    </div>
+    
+    <div id="attendance-message-container"></div>
+    
+    <!-- Filter controls -->
+    <div class="filter-controls card-container">
+      <h3 class="card-title">Filtros de Busca</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="employee-select">Funcionário</label>
+          <select id="employee-select" class="form-control">
+            <option value="">Todos os Funcionários</option>
+            <!-- Will be populated dynamically -->
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="date-from">Data Inicial</label>
+          <input type="date" id="date-from" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="date-to">Data Final</label>
+          <input type="date" id="date-to" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="type-select">Tipo de Registro</label>
+          <select id="type-select" class="form-control">
+            <option value="">Todos os Tipos</option>
+            <option value="check-in">Entrada</option>
+            <option value="lunch-start">Início do Almoço</option>
+            <option value="lunch-end">Fim do Almoço</option>
+            <option value="check-out">Saída</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button id="btn-reset" class="btn outline-btn">
+          <i class="fas fa-undo"></i> Resetar
+        </button>
+        <button id="btn-filter" class="btn primary-btn">
+          <i class="fas fa-search"></i> Filtrar
+        </button>
+      </div>
+    </div>
+    
+    <!-- Attendance Records Table -->
+    <div class="card-container">
+      <div class="card-header with-actions">
+        <h3 class="card-title">Registros de Frequência</h3>
+        <div class="card-actions">
+          <button id="btn-add" class="btn primary-btn">
+            <i class="fas fa-plus"></i> Novo Registro
+          </button>
+          <button id="btn-edit" class="btn outline-btn">
+            <i class="fas fa-edit"></i> Editar
+          </button>
+          <button id="btn-delete" class="btn outline-btn">
+            <i class="fas fa-trash-alt"></i> Excluir
+          </button>
+        </div>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Funcionário</th>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Hora</th>
+            </tr>
+          </thead>
+          <tbody id="attendance-table-body">
+            <!-- Will be populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add Attendance Modal (Hidden by Default) -->
+  <div id="add-attendance-modal" class="modal-overlay" style="display: none;"></div>
+  
+  <!-- Edit Attendance Modal (Hidden by Default) -->
+  <div id="edit-attendance-modal" class="modal-overlay" style="display: none;"></div>
+
+  <!-- Include the template loader first -->
+  <script src="../js/template-loader.js" type="module"></script>
+  <script type="module">
+    import templateLoader from '../js/template-loader.js';
+    
+    // Initialize the template system
+    document.addEventListener('DOMContentLoaded', () => {
+      templateLoader.initializeLayout();
+    });
+  </script>
+  
+  <!-- Include attendance-specific scripts -->
+  <script src="attendance.js"></script>
+</body>
+</html>

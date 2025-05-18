@@ -16,74 +16,8 @@
     <i class="fas fa-bars"></i>
   </button>
 
-  <!-- Sidebar Navigation -->
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <span class="sidebar-header-text">Avenida</span>
-      <button class="sidebar-toggle" title="Alternar Menu">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-    </div>
-    
-    <ul class="sidebar-nav">
-      <li class="section-title">Avenida</li>
-      <li class="sidebar-nav-item">
-        <a href="#" class="sidebar-nav-link active has-submenu">
-          <span class="sidebar-icon"><i class="fas fa-users"></i></span>
-          <span class="nav-text">Funcionários</span>
-        </a>
-        <ul class="submenu active">
-          <li class="submenu-item">
-            <a href="user.html" class="submenu-link">
-              <i class="fas fa-list-ul submenu-icon"></i> Visão Geral
-            </a>
-          </li>
-          <li class="submenu-item">
-            <a href="user-create.html" class="submenu-link">
-              <i class="fas fa-user-plus submenu-icon"></i> Novo Funcionário
-            </a>
-          </li>
-          <li class="submenu-item">
-            <a href="user-performance.html" class="submenu-link active">
-              <i class="fas fa-chart-line submenu-icon"></i> Desempenho
-            </a>
-          </li>
-          <li class="submenu-item">
-            <a href="user-teams.html" class="submenu-link">
-              <i class="fas fa-users-cog submenu-icon"></i> Equipes
-            </a>
-          </li>
-          <li class="submenu-item">
-            <a href="user-permissions.html" class="submenu-link">
-              <i class="fas fa-key submenu-icon"></i> Permissões
-            </a>
-          </li>
-          <li class="submenu-item sidebar-report-item">
-            <a href="user-reports.html" class="submenu-link">
-              <i class="fas fa-file-alt submenu-icon"></i> Relatórios
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../attendance/attendance.html" class="sidebar-nav-link has-submenu">
-          <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
-          <span class="nav-text">Frequências</span>
-        </a>
-        <ul class="submenu">
-          <li class="submenu-item">
-            <a href="../attendance/attendance.html" class="submenu-link">Listar</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../attendance/attendance-create.html" class="submenu-link">Registrar</a>
-          </li>
-          <li class="submenu-item">
-            <a href="../attendance/attendance-edit.html" class="submenu-link">Editar</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </div>
+  <!-- Sidebar container - will be populated by template-loader.js -->
+  <div id="sidebar-container"></div>
 
   <!-- Content Area -->
   <div class="content">
@@ -226,8 +160,18 @@
     </div>
   </div>
 
-  <!-- Include the scripts -->
-  <script src="sidebar.js"></script>
+  <!-- Include the template loader first -->
+  <script src="../js/template-loader.js" type="module"></script>
+  <script type="module">
+    import templateLoader from '../js/template-loader.js';
+    
+    // Initialize the template system
+    document.addEventListener('DOMContentLoaded', () => {
+      templateLoader.initializeLayout();
+    });
+  </script>
+  
+  <!-- Include the performance scripts -->
   <script src="performance.js"></script>
 </body>
 </html>

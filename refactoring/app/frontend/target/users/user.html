@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Padaria - Gerenciamento de Funcionários</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
@@ -87,10 +87,10 @@
   </div>
 
   <!-- Include the template loader first -->
-  <script src="/js/template_loader.js" type="module"></script>
+  <script src="../js/utils/template_loader.js" type="module"></script>
   <script type="module">
-    import templateLoader from '/js/template_loader.js';
-    
+    import templateLoader from '../js/utils/template_loader.js';
+
     // Initialize the template system
     document.addEventListener('DOMContentLoaded', () => {
       templateLoader.initializeLayout();
@@ -98,8 +98,8 @@
   </script>
   
   <!-- Include the other scripts as modules -->
-  <script src="utils.js" type="module"></script>
-  <script src="search.js" type="module"></script>
-  <script src="get_users.js" type="module"></script>
+  <script src="../js/utils/utils.js" type="module"></script>
+  <script src="../js/utils/search.js" type="module"></script>
+  <script src="../js/users/get_users.js" type="module"></script>
 </body>
 </html>

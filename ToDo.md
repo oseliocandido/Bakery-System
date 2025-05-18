@@ -34,6 +34,7 @@
 - For some reason he removed the the as setas que faziam collpase do submenu
  - Colocar de volta
  - Quando clicar em outro submenu, deve dar hide em todos submenus e expandir ele
+<<<<<<< Updated upstream
 - ASK AI for create dashboard home page
 - Solicitacao de Ferias
  - Ele tirou umas coisas que eram bem  interessantes
@@ -43,3 +44,8 @@
 
  http://localhost:3000/attendance/attendance-report.html
  - This can be useful for verify empployees that not attended
+=======
+
+- Solicitacao de Ferias
+ - Ele tirou umas coisas que eram bem  interessantes
+>>>>>>> Stashed changes

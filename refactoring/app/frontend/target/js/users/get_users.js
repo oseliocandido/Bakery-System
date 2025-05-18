@@ -1,6 +1,6 @@
 // Import necessary functions from our modules
-import { showMessage } from './utils.js';
-import { resetSearch, updateUserCount, applyAllFilters } from './search.js';
+import { showMessage } from '../utils//utils.js';
+import { resetSearch, updateUserCount, applyAllFilters } from '../utils/search.js';
 
 // API base URL - adjusted to match your FastAPI backend running on port 4200 with /api prefix
 const API_BASE_URL = 'http://localhost:4200/api';

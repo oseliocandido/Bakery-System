@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Padaria - Relatórios de Frequência</title>
+  <link rel="stylesheet" href="../users/styles.css">
+  <link rel="stylesheet" href="attendance.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <!-- Chart.js for the reports -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Mobile menu toggle button - visible on small screens -->
+  <button class="mobile-menu-toggle" style="display: none;">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar container - will be populated by template-loader.js -->
+  <div id="sidebar-container"></div>
+
+  <!-- Content Area -->
+  <div class="content">
+    <!-- Section Header -->
+    <div class="page-header">
+      <div class="page-title-section">
+        <h1 class="content-header">Relatórios de Frequência</h1>
+        <p class="page-description">Analise dados de presença, pontualidade e horas trabalhadas para otimizar a gestão de pessoal.</p>
+      </div>
+    </div>
+    
+    <!-- Report Filter Controls -->
+    <div class="filter-controls card-container">
+      <h3 class="card-title">Filtros do Relatório</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="report-date">Data do Relatório</label>
+          <input type="date" id="report-date" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="report-department">Departamento</label>
+          <select id="report-department" class="form-control">
+            <option value="all">Todos os Departamentos</option>
+            <option value="bakery">Padaria</option>
+            <option value="confectionery">Confeitaria</option>
+            <option value="cashier">Caixa</option>
+            <option value="kitchen">Cozinha</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="report-employee">Funcionário</label>
+          <select id="report-employee" class="form-control">
+            <option value="all">Todos os Funcionários</option>
+            <!-- Will be populated dynamically -->
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button id="btn-load-report" class="btn primary-btn">
+          <i class="fas fa-chart-bar"></i> Gerar Relatório
+        </button>
+        <button id="btn-export-report" class="btn outline-btn">
+          <i class="fas fa-file-export"></i> Exportar
+        </button>
+      </div>
+    </div>
+    
+    <!-- Dashboard Stats -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>Total de Funcionários</h3>
+        <div class="stat-value" id="total-employees">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Presentes Hoje</h3>
+        <div class="stat-value" id="present-today">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Ausentes Hoje</h3>
+        <div class="stat-value" id="absent-today">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Entradas Atrasadas</h3>
+        <div class="stat-value" id="late-checkins">0</div>
+      </div>
+    </div>
+    
+    <!-- Charts Section -->
+    <div class="charts-grid">
+      <!-- Attendance by Department Chart -->
+      <div class="chart-container card-container">
+        <div class="card-header">
+          <h3 class="card-title">Presença por Departamento</h3>
+        </div>
+        <div class="card-body">
+          <canvas id="department-chart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Attendance Trend Chart -->
+      <div class="chart-container card-container">
+        <div class="card-header">
+          <h3 class="card-title">Tendência de Presença (Últimos 30 dias)</h3>
+        </div>
+        <div class="card-body">
+          <canvas id="trend-chart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Punctuality Chart -->
+      <div class="chart-container card-container">
+        <div class="card-header">
+          <h3 class="card-title">Pontualidade</h3>
+        </div>
+        <div class="card-body">
+          <canvas id="punctuality-chart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Hours Worked Chart -->
+      <div class="chart-container card-container">
+        <div class="card-header">
+          <h3 class="card-title">Horas Trabalhadas por Funcionário</h3>
+        </div>
+        <div class="card-body">
+          <canvas id="hours-chart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Daily Attendance Summary -->
+    <div class="card-container">
+      <div class="card-header">
+        <h3 class="card-title">Resumo de Frequência Diária</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Funcionário</th>
+              <th>Entrada</th>
+              <th>Início Almoço</th>
+              <th>Fim Almoço</th>
+              <th>Saída</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="summary-table-body">
+            <!-- Will be populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include the template loader first -->
+  <script src="../js/template-loader.js" type="module"></script>
+  <script type="module">
+    import templateLoader from '../js/template-loader.js';
+    
+    // Initialize the template system
+    document.addEventListener('DOMContentLoaded', () => {
+      templateLoader.initializeLayout();
+    });
+  </script>
+  
+  <!-- Include attendance report scripts -->
+  <script src="attendance-report.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 // Import utilities
-import { showMessage } from '../users/utils.js';
+import { showMessage } from '../../users/utils.js';
 
 // API base URL
 const API_BASE_URL = 'http://localhost:4200/api';
