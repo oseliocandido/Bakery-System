@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Padaria - Registrar Ponto</title>
+  <link rel="stylesheet" href="../users/styles.css">
+  <link rel="stylesheet" href="attendance.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+  <!-- Mobile menu toggle button - visible on small screens -->
+  <button class="mobile-menu-toggle" style="display: none;">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar container - will be populated by template-loader.js -->
+  <div id="sidebar-container"></div>
+
+  <!-- Content Area -->
+  <div class="content">
+    <!-- Section Header -->
+    <div class="page-header">
+      <div class="page-title-section">
+        <h1 class="content-header">Registrar Ponto</h1>
+        <p class="page-description">Registre a entrada, saída ou intervalo de almoço de um funcionário.</p>
+      </div>
+    </div>
+    
+    <div id="create-attendance-message-container"></div>
+    
+    <!-- Create Attendance Form - Simplified Version -->
+    <div class="card-container attendance-register-card">
+      <div class="card-body">
+        <div class="form-group">
+          <label for="funcionario">Funcionário</label>
+          <select id="funcionario" class="form-control">
+            <option value="">Selecione um funcionário</option>
+            <!-- Will be populated dynamically -->
+          </select>
+        </div>
+        
+        <div class="attendance-type-selector">
+          <h3>Tipo de Registro</h3>
+          
+          <div class="attendance-buttons">
+            <div class="attendance-button" data-type="entrada">
+              <div class="button-icon entrada-icon">
+                <i class="fas fa-sign-in-alt"></i>
+              </div>
+              <span>Entrada</span>
+            </div>
+            
+            <div class="attendance-button" data-type="entrada-almoco">
+              <div class="button-icon entrada-almoco-icon">
+                <i class="fas fa-utensils"></i>
+              </div>
+              <span>Entrada Almoço</span>
+            </div>
+            
+            <div class="attendance-button" data-type="saida-almoco">
+              <div class="button-icon saida-almoco-icon">
+                <i class="fas fa-coffee"></i>
+              </div>
+              <span>Saída Almoço</span>
+            </div>
+            
+            <div class="attendance-button" data-type="saida">
+              <div class="button-icon saida-icon">
+                <i class="fas fa-sign-out-alt"></i>
+              </div>
+              <span>Saída</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="attendance-note">
+          <p>Nota: O registro será feito com a data e hora atuais do sistema.</p>
+        </div>
+        
+        <div class="form-actions">
+          <button id="register-attendance" class="btn primary-btn">Registrar Ponto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include the template loader first -->
+  <script src="../js/template-loader.js" type="module"></script>
+  <script type="module">
+    import templateLoader from '../js/template-loader.js';
+    
+    // Initialize the template system
+    document.addEventListener('DOMContentLoaded', () => {
+      templateLoader.initializeLayout();
+    });
+  </script>
+  
+  <!-- Include attendance-specific scripts -->
+  <script src="attendance-create.js"></script>
+</body>
+</html>
