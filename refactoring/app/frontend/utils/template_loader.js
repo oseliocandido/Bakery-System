@@ -10,10 +10,10 @@ const templateLoader = {
     async loadSidebar() {
       const sidebarContainer = document.getElementById('sidebar-container');
       if (!sidebarContainer) return;
-      
       try {
-        const response = await fetch('/components/sidebar.html');
-        
+        // Fix: Update path to correctly point to the sidebar HTML file with correct folder name 'commom' not 'common'
+        const response = await fetch('/components/commom/sidebar/sidebar.html');
+
         if (!response.ok) {
           throw new Error(`Failed to load sidebar: ${response.status}`);
         }
@@ -140,4 +140,3 @@ const templateLoader = {
   };
   
   export default templateLoader;
-  
