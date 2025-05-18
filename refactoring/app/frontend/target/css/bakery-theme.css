@@ -1,0 +1,327 @@
+/* 
+   Attendance Management Styles
+   Using the existing color palette from the application:
+   - Primary gradient: #71260A to #C06530 (brown/orange)
+   - Active/success: #3aa111 (green)
+   - Borders/accents: #E9D5CC (light beige)
+*/
+
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f7f5;
+  color: #333;
+}
+
+/* Bakery Theme Colors */
+:root {
+  --bakery-dark: #71260A;
+  --bakery-medium: #A0462A;
+  --bakery-light: #C06530;
+  --bakery-accent: #E9D5CC;
+  --bakery-success: #3aa111;
+  --bakery-warning: #f0ad4e;
+  --bakery-danger: #dc3545;
+  --bakery-info: #5bc0de;
+}
+
+/* Buttons */
+.btn-bakery-primary {
+  background-image: linear-gradient(to right, var(--bakery-dark), var(--bakery-light));
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-bakery-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-bakery-secondary {
+  background-color: var(--bakery-accent);
+  color: var(--bakery-dark);
+  border: 1px solid var(--bakery-medium);
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-bakery-secondary:hover {
+  background-color: #f0e6e0;
+}
+
+.btn-bakery-success {
+  background-color: var(--bakery-success);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-bakery-danger {
+  background-color: var(--bakery-danger);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Cards */
+.bakery-card {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid var(--bakery-accent);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.bakery-card-title {
+  color: var(--bakery-dark);
+  margin-bottom: 15px;
+  font-size: 18px;
+  border-bottom: 2px solid var(--bakery-accent);
+  padding-bottom: 8px;
+}
+
+/* Forms */
+.bakery-form-group {
+  margin-bottom: 15px;
+}
+
+.bakery-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: var(--bakery-dark);
+}
+
+.bakery-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--bakery-accent);
+  border-radius: 4px;
+  transition: border 0.3s ease;
+}
+
+.bakery-input:focus {
+  border-color: var(--bakery-medium);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(192, 101, 48, 0.1);
+}
+
+.bakery-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--bakery-accent);
+  border-radius: 4px;
+  background-color: white;
+}
+
+/* Tables */
+.bakery-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.bakery-table th {
+  background-image: linear-gradient(to right, var(--bakery-dark), var(--bakery-medium));
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.bakery-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--bakery-accent);
+}
+
+.bakery-table tr:hover {
+  background-color: #fcf8f6;
+}
+
+.bakery-table tr.selected {
+  background-color: rgba(233, 213, 204, 0.4);
+}
+
+/* Attendance Status Colors */
+.attendance-present {
+  color: var(--bakery-success);
+  font-weight: bold;
+}
+
+.attendance-absent {
+  color: var(--bakery-danger);
+  font-weight: bold;
+}
+
+.attendance-late {
+  color: var(--bakery-warning);
+  font-weight: bold;
+}
+
+.attendance-partial {
+  color: var(--bakery-info);
+  font-weight: bold;
+}
+
+/* Badges */
+.bakery-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.bakery-badge-primary {
+  background-color: var(--bakery-light);
+  color: white;
+}
+
+.bakery-badge-success {
+  background-color: var(--bakery-success);
+  color: white;
+}
+
+.bakery-badge-warning {
+  background-color: var(--bakery-warning);
+  color: white;
+}
+
+.bakery-badge-danger {
+  background-color: var(--bakery-danger);
+  color: white;
+}
+
+/* Alerts */
+.bakery-alert {
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border-left: 4px solid transparent;
+}
+
+.bakery-alert-success {
+  background-color: #def0d8;
+  border-left-color: var(--bakery-success);
+  color: #2b701c;
+}
+
+.bakery-alert-warning {
+  background-color: #fcf8e3;
+  border-left-color: var(--bakery-warning);
+  color: #8a6d3b;
+}
+
+.bakery-alert-danger {
+  background-color: #f2dede;
+  border-left-color: var(--bakery-danger);
+  color: #a94442;
+}
+
+.bakery-alert-info {
+  background-color: #d9edf7;
+  border-left-color: var(--bakery-info);
+  color: #31708f;
+}
+
+/* Dashboard Specific */
+.bakery-dashboard-stat {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.bakery-dashboard-stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background-image: linear-gradient(to right, var(--bakery-dark), var(--bakery-light));
+}
+
+.bakery-dashboard-stat-title {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.bakery-dashboard-stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--bakery-dark);
+}
+
+/* Modals */
+.bakery-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.bakery-modal-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 500px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.bakery-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--bakery-accent);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.bakery-modal-title {
+  color: var(--bakery-dark);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.bakery-modal-close {
+  font-size: 24px;
+  color: #777;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.bakery-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 15px;
+  border-top: 1px solid var(--bakery-accent);
+  margin-top: 20px;
+  gap: 10px;
+}

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Padaria - Desempenho de Funcionários</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <!-- Chart.js for performance charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Mobile menu toggle button - visible on small screens -->
+  <button class="mobile-menu-toggle" style="display: none;">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-header-text">Avenida</span>
+      <button class="sidebar-toggle" title="Alternar Menu">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+    </div>
+    
+    <ul class="sidebar-nav">
+      <li class="section-title">Avenida</li>
+      <li class="sidebar-nav-item">
+        <a href="#" class="sidebar-nav-link active has-submenu">
+          <span class="sidebar-icon"><i class="fas fa-users"></i></span>
+          <span class="nav-text">Funcionários</span>
+        </a>
+        <ul class="submenu active">
+          <li class="submenu-item">
+            <a href="user.html" class="submenu-link">
+              <i class="fas fa-list-ul submenu-icon"></i> Visão Geral
+            </a>
+          </li>
+          <li class="submenu-item">
+            <a href="user-create.html" class="submenu-link">
+              <i class="fas fa-user-plus submenu-icon"></i> Novo Funcionário
+            </a>
+          </li>
+          <li class="submenu-item">
+            <a href="user-performance.html" class="submenu-link active">
+              <i class="fas fa-chart-line submenu-icon"></i> Desempenho
+            </a>
+          </li>
+          <li class="submenu-item">
+            <a href="user-teams.html" class="submenu-link">
+              <i class="fas fa-users-cog submenu-icon"></i> Equipes
+            </a>
+          </li>
+          <li class="submenu-item">
+            <a href="user-permissions.html" class="submenu-link">
+              <i class="fas fa-key submenu-icon"></i> Permissões
+            </a>
+          </li>
+          <li class="submenu-item sidebar-report-item">
+            <a href="user-reports.html" class="submenu-link">
+              <i class="fas fa-file-alt submenu-icon"></i> Relatórios
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="sidebar-nav-item">
+        <a href="../attendance/attendance.html" class="sidebar-nav-link has-submenu">
+          <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+          <span class="nav-text">Frequências</span>
+        </a>
+        <ul class="submenu">
+          <li class="submenu-item">
+            <a href="../attendance/attendance.html" class="submenu-link">Listar</a>
+          </li>
+          <li class="submenu-item">
+            <a href="../attendance/attendance-create.html" class="submenu-link">Registrar</a>
+          </li>
+          <li class="submenu-item">
+            <a href="../attendance/attendance-edit.html" class="submenu-link">Editar</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content">
+    <!-- Performance Section Header with description -->
+    <div class="page-header">
+      <div class="page-title-section">
+        <h1 class="content-header">Desempenho de Funcionários</h1>
+        <p class="page-description">Acompanhe métricas de produtividade, pontuações de desempenho e compare tendências ao longo do tempo para otimizar sua equipe.</p>
+      </div>
+    </div>
+    
+    <!-- Performance metrics overview -->
+    <div class="metrics-overview">
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-user-clock"></i></div>
+        <div class="metric-content">
+          <h3>96%</h3>
+          <p>Média de Pontualidade</p>
+        </div>
+        <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 3%</div>
+      </div>
+      
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-calendar-check"></i></div>
+        <div class="metric-content">
+          <h3>92%</h3>
+          <p>Taxa de Presença</p>
+        </div>
+        <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 1%</div>
+      </div>
+      
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-tasks"></i></div>
+        <div class="metric-content">
+          <h3>87%</h3>
+          <p>Produtividade</p>
+        </div>
+        <div class="metric-trend down"><i class="fas fa-arrow-down"></i> 2%</div>
+      </div>
+      
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-award"></i></div>
+        <div class="metric-content">
+          <h3>4.2</h3>
+          <p>Avaliação Média</p>
+        </div>
+        <div class="metric-trend up"><i class="fas fa-arrow-up"></i> 0.3</div>
+      </div>
+    </div>
+    
+    <!-- Performance Graphs Section -->
+    <div class="performance-charts">
+      <!-- Performance by department chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h2>Desempenho por Departamento</h2>
+          <div class="chart-actions">
+            <select id="period-select">
+              <option value="month">Último Mês</option>
+              <option value="quarter">Último Trimestre</option>
+              <option value="year">Último Ano</option>
+            </select>
+          </div>
+        </div>
+        <div class="chart-body">
+          <canvas id="departmentChart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Performance trend chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h2>Tendência de Desempenho</h2>
+          <div class="chart-actions">
+            <button class="chart-toggle active" data-view="productivity">Produtividade</button>
+            <button class="chart-toggle" data-view="attendance">Frequência</button>
+            <button class="chart-toggle" data-view="evaluations">Avaliações</button>
+          </div>
+        </div>
+        <div class="chart-body">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Top Performers Section -->
+    <div class="performance-tables">
+      <div class="performance-table-section">
+        <h2>Funcionários de Destaque</h2>
+        <table class="performance-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cargo</th>
+              <th>Pontuação</th>
+              <th>Comparação</th>
+              <th>Tendência</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="employee-info">
+                  <span class="employee-rank">1</span>
+                  <span class="employee-name">Ana Silva</span>
+                </div>
+              </td>
+              <td>Atendente</td>
+              <td>96</td>
+              <td>22% acima da média</td>
+              <td><span class="trend-badge up"><i class="fas fa-arrow-up"></i> Em alta</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="employee-info">
+                  <span class="employee-rank">2</span>
+                  <span class="employee-name">Carlos Oliveira</span>
+                </div>
+              </td>
+              <td>Padeiro</td>
+              <td>93</td>
+              <td>18% acima da média</td>
+              <td><span class="trend-badge stable"><i class="fas fa-equals"></i> Estável</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="employee-info">
+                  <span class="employee-rank">3</span>
+                  <span class="employee-name">Marina Costa</span>
+                </div>
+              </td>
+              <td>Caixa</td>
+              <td>91</td>
+              <td>15% acima da média</td>
+              <td><span class="trend-badge up"><i class="fas fa-arrow-up"></i> Em alta</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include the scripts -->
+  <script src="sidebar.js"></script>
+  <script src="performance.js"></script>
+</body>
+</html>

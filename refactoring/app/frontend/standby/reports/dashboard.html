@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/bakery-theme.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Bakery System</h2>
+            <ul>
+                <li><a href="../home.html">Dashboard</a></li>
+                <li><a href="../users/user.html">Users</a></li>
+                <li><a href="attendance.html">Attendance</a></li>
+                <li><a href="dashboard.html" class="active">Attendance Dashboard</a></li>
+                <li><a href="#">Stock</a></li>
+                <li><a href="#">Balance</a></li>
+                <li><a href="../login/login.html">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="header">
+                <h1>Attendance Dashboard</h1>
+            </div>
+
+            <!-- Date Selection -->
+            <div class="filter-controls bakery-card">
+                <h3 class="bakery-card-title">Select Date Range</h3>
+                <div class="filter-section">
+                    <label for="dashboard-date" class="bakery-label">Select Date:</label>
+                    <input type="date" id="dashboard-date" class="bakery-input">
+                </div>
+                <button id="btn-load" class="btn-bakery-primary">Load Dashboard</button>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-container">
+                <div class="bakery-dashboard-stat">
+                    <h3 class="bakery-dashboard-stat-title">Total Employees</h3>
+                    <div class="bakery-dashboard-stat-value" id="total-employees">0</div>
+                </div>
+                <div class="bakery-dashboard-stat">
+                    <h3 class="bakery-dashboard-stat-title">Present Today</h3>
+                    <div class="bakery-dashboard-stat-value" id="present-today">0</div>
+                </div>
+                <div class="bakery-dashboard-stat">
+                    <h3 class="bakery-dashboard-stat-title">Absent Today</h3>
+                    <div class="bakery-dashboard-stat-value" id="absent-today">0</div>
+                </div>
+                <div class="bakery-dashboard-stat">
+                    <h3 class="bakery-dashboard-stat-title">Late Check-ins</h3>
+                    <div class="bakery-dashboard-stat-value" id="late-checkins">0</div>
+                </div>
+            </div>
+
+            <!-- Attendance Summary Table -->
+            <div class="bakery-card">
+                <h3 class="bakery-card-title">Daily Attendance Summary</h3>
+                <div class="table-container">
+                    <table class="bakery-table">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Check In</th>
+                                <th>Lunch Start</th>
+                                <th>Lunch End</th>
+                                <th>Check Out</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-table-body">
+                            <!-- Will be populated with JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

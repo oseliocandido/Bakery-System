@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Padaria - Editar Frequência</title>
+  <link rel="stylesheet" href="../users/styles.css">
+  <link rel="stylesheet" href="attendance.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+  <!-- Mobile menu toggle button - visible on small screens -->
+  <button class="mobile-menu-toggle" style="display: none;">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar Navigation (Same structure as in attendance.html) -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-header-text">Avenida</span>
+      <button class="sidebar-toggle" title="Alternar Menu">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+    </div>
+    
+    <ul class="sidebar-nav">
+      <li class="section-title">Avenida</li>
+      <li class="sidebar-nav-item">
+        <a href="../users/user.html" class="sidebar-nav-link has-submenu">
+          <span class="sidebar-icon"><i class="fas fa-users"></i></span>
+          <span class="nav-text">Funcionários</span>
+        </a>
+        <ul class="submenu">
+          <li class="submenu-item">
+            <a href="../users/user.html" class="submenu-link">
+              <i class="fas fa-list-ul submenu-icon"></i> Visão Geral
+            </a>
+          </li>
+          <li class="submenu-item">
+            <a href="../users/user-create.html" class="submenu-link">
+              <i class="fas fa-user-plus submenu-icon"></i> Novo Funcionário
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="sidebar-nav-item">
+        <a href="#" class="sidebar-nav-link active has-submenu">
+          <span class="sidebar-icon"><i class="fas fa-calendar-check"></i></span>
+          <span class="nav-text">Frequências</span>
+        </a>
+        <ul class="submenu active">
+          <li class="submenu-item">
+            <a href="attendance.html" class="submenu-link">
+              <i class="fas fa-list-ul submenu-icon"></i> Listar
+            </a>
+          </li>
+          <li class="submenu-item">
+            <a href="attendance-create.html" class="submenu-link">
+              <i class="fas fa-plus-circle submenu-icon"></i> Registrar
+            </a>
+          </li>
+          <li class="submenu-item">
+            <a href="attendance-edit.html" class="submenu-link active">
+              <i class="fas fa-edit submenu-icon"></i> Editar
+            </a>
+          </li>
+          <li class="submenu-item">
+            <a href="attendance-report.html" class="submenu-link">
+              <i class="fas fa-chart-bar submenu-icon"></i> Relatórios
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content">
+    <!-- Section Header -->
+    <h1 class="content-header">Editar Registro de Ponto</h1>
+    
+    <div id="edit-message-container"></div>
+    
+    <!-- Search for Attendance Record to Edit -->
+    <div class="user-form">
+      <div class="search-attendance-section">
+        <h2>Buscar Registro</h2>
+        
+        <div class="form-group">
+          <label for="edit-user-select">Funcionário</label>
+          <select id="edit-user-select" class="form-control">
+            <option value="">Selecione um funcionário</option>
+            <!-- User options will be dynamically populated -->
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit-date">Data</label>
+          <input type="date" id="edit-date" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label>Tipo de Registro</label>
+          <select id="edit-type-select" class="form-control">
+            <option value="">Selecione o tipo</option>
+            <option value="Entrada">Entrada</option>
+            <option value="Entrada Almoço">Entrada Almoço</option>
+            <option value="Saída Almoço">Saída Almoço</option>
+            <option value="Saída">Saída</option>
+          </select>
+        </div>
+        
+        <div class="form-actions">
+          <button id="search-attendance-btn" class="primary-button">Buscar</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Edit Attendance Form - Initially Hidden -->
+    <div class="user-form" id="edit-form-container" style="display: none; margin-top: 20px;">
+      <h2>Editar Registro</h2>
+      
+      <form id="edit-attendance-form">
+        <input type="hidden" id="edit-attendance-id">
+        <input type="hidden" id="edit-user-id">
+        
+        <div class="attendance-info">
+          <div class="attendance-info-row">
+            <span class="info-label">Funcionário:</span>
+            <span id="display-user-name" class="info-value">-</span>
+          </div>
+          <div class="attendance-info-row">
+            <span class="info-label">Data:</span>
+            <span id="display-date" class="info-value">-</span>
+          </div>
+          <div class="attendance-info-row">
+            <span class="info-label">Tipo:</span>
+            <span id="display-type" class="info-value">-</span>
+          </div>
+          <div class="attendance-info-row">
+            <span class="info-label">Horário Atual:</span>
+            <span id="display-current-time" class="info-value">-</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit-time">Novo Horário</label>
+          <input type="time" id="edit-time" class="form-control" required>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" id="delete-attendance-btn" class="delete-button">Excluir</button>
+          <button type="button" id="cancel-edit" onclick="window.location.reload()">Cancelar</button>
+          <button type="submit" class="primary-button">Atualizar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../users/utils.js" type="module"></script>
+  <script src="attendance-edit.js" type="module"></script>
+  <script src="../users/sidebar.js"></script>
+</body>
+</html>
