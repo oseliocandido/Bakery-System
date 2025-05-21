@@ -8,7 +8,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('bakery.jpg'); 
+    background-image: url('/assets/images/bakery.jpg'); 
     background-size: cover; 
     background-position: center; 
 }

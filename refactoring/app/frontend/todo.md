@@ -1,7 +1,5 @@
 1. login screen
 
-
-
 2. Menu
 HOME
 FUNCIONARIOS
