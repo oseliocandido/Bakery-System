@@ -8,27 +8,30 @@
   <link rel="stylesheet" href="/assets/css/components/sidebar.css">
   <link rel="stylesheet" href="/assets/css/components/filters.css">
   <link rel="stylesheet" href="/assets/css/components/search.css">
+  <link rel="stylesheet" href="/assets/css/components/forms.css">
   <link rel="stylesheet" href="/modules/users/users.css">
 
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body>
-  <!-- Mobile menu toggle button - visible on small screens -->
-  <button class="mobile-menu-toggle" style="display: none;">
-    <i class="fas fa-bars"></i>
-  </button>
-
   <!-- Sidebar container - will be populated by template-loader.js -->
   <div id="sidebar-container"></div>
+  <script type="module">
+    import templateLoader from '/components/commom/sidebar/sidebar.js';
 
+    // Initialize the template system
+    document.addEventListener('DOMContentLoaded', () => {
+      templateLoader.initializeLayout();
+    });
+  </script>
   <!-- Content Area -->
   <div class="content">
     <!-- Users Section Header with description -->
     <div class="page-header">
       <div class="page-title-section">
         <h1 class="content-header">Gerenciamento de Funcionários</h1>
-        <p class="page-description">Visualize e gerencie todos os funcionários do sistema. Use os filtros para encontrar rapidamente usuários específicos ou <a href="user-create.html" class="action-link">adicione um novo funcionário</a>.</p>
+        <p class="page-description">Visualize e gerencie todos os funcionários do sistema. Use os filtros para encontrar rapidamente usuários específicos.</p>
       </div>
     </div>
     
@@ -40,7 +43,7 @@
       
       <div class="user-tools">
         <div class="search-container">
-          <input type="text" id="user-search" class="search-input" placeholder="Buscar funcionários...">
+          <input type="text" id="user-search" class="search-input" placeholder="Buscar Funcionários">
         </div>
         
         <div class="filters-dropdown">
@@ -69,7 +72,6 @@
         </div>
       </div>
     </div>
-    
     <!-- Users table -->
     <table class="user-table">
       <thead>
@@ -86,18 +88,7 @@
       </tbody>
     </table>
   </div>
-
-  <script type="module">
-    import templateLoader from '/utils/template_loader.js';
-
-    // Initialize the template system
-    document.addEventListener('DOMContentLoaded', () => {
-      templateLoader.initializeLayout();
-    });
-  </script>
-  
   <!-- Include the other scripts as modules -->
   <script src="/utils/search.js" type="module"></script>
-
 </body>
 </html>

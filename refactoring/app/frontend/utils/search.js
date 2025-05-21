@@ -1,9 +1,6 @@
 // Import utils
 import { showMessage } from './utils.js';
 
-// Constants
-const API_BASE_URL = 'http://localhost:4200/api';
-
 // Search users function - Using contains instead of startsWith
 function searchUsers(query) {
   // This is a client-side search that uses contains

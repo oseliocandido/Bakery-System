@@ -59,3 +59,33 @@
   border-radius: 4px;
   font-size: 14px;
 }
+
+/* Reset filters button styling */
+.reset-filters-btn {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 10px 15px;
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 10px;
+  color: #777;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.reset-filters-btn:hover {
+  background-color: #f5f5f5;
+  border-color: #d0d0d0;
+  color: #555;
+}
+
+.reset-filters-btn:active {
+  background-color: #e8e8e8;
+  border-color: #bbb;
+  color: #333;
+  transform: scale(0.98);
+}

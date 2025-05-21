@@ -33,3 +33,26 @@ body {
 .content.expanded {
   margin-left: 60px;
 }
+
+/* Page header with description */
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title-section {
+  margin-bottom: 20px;
+}
+
+.content-header {
+  font-size: 24px;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.page-description {
+  color: #6e6e6e;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
