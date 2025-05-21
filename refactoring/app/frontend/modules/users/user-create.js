@@ -1,3 +1,5 @@
+import { showMessage } from '/utils/utils.js';
+
 // API base URL - adjusted to match your FastAPI backend running on port 4200 with /api prefix
 const API_BASE_URL = 'http://localhost:4200/api';
 
@@ -47,6 +49,8 @@ async function createUser(userData) {
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('User create form loaded');
+
   // Create user form submission
   createUserForm.addEventListener('submit', async (e) => {
     e.preventDefault();

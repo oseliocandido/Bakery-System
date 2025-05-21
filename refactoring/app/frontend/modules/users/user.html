@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Padaria - Gerenciamento de Funcionários</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="/modules/users/css/styles.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
@@ -77,20 +77,14 @@
         </tr>
       </thead>
       <tbody id="employees-table-body">
-        <!-- Employee data will be loaded here dynamically -->
+        <script src="/modules/users/get_users.js" type="module"></script>
       </tbody>
     </table>
   </div>
 
-  <!-- Edit User Modal/Section - Initially Hidden -->
-  <div id="edit-user-modal" style="display: none;">
-    <!-- Edit user form will go here -->
-  </div>
 
-  <!-- Include the template loader first -->
-  <script src="../js/utils/template_loader.js" type="module"></script>
   <script type="module">
-    import templateLoader from '../js/utils/template_loader.js';
+    import templateLoader from '/utils/template_loader.js';
 
     // Initialize the template system
     document.addEventListener('DOMContentLoaded', () => {
@@ -99,8 +93,7 @@
   </script>
   
   <!-- Include the other scripts as modules -->
-  <script src="../js/utils/utils.js" type="module"></script>
-  <script src="../js/utils/search.js" type="module"></script>
-  <script src="../js/users/get_users.js" type="module"></script>
+  <script src="/utils/search.js" type="module"></script>
+
 </body>
 </html>
