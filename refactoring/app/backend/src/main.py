@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="OC & SM API")
 # CORS Configuration
 origins = [
-    "http://localhost:3000",  # Allow frontend running on port 5500
+    "http://localhost:8000",  # Allow frontend running on port 5500
 ]
 
 app.add_middleware(
