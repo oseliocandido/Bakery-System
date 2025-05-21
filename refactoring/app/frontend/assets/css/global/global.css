@@ -1,0 +1,35 @@
+/* Main Layout */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+  color: #333;
+  transition: margin-left 0.3s;
+}
+
+/* Sidebar/Navigation */
+.sidebar {
+  background-color: #1e2433;
+  color: white;
+  position: fixed;
+  width: 250px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  transition: width 0.3s, transform 0.3s;
+  z-index: 1000;
+}
+
+/* Usefull Area */
+.content {
+  margin-left: 250px;
+  padding: 20px 30px;
+  transition: margin-left 0.3s;
+}
+
+.content.expanded {
+  margin-left: 60px;
+}

@@ -1,0 +1,61 @@
+/* Filters dropdown */
+.filters-dropdown {
+  position: relative;
+}
+
+.filters-button {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.filters-button i {
+  color: #777;
+}
+
+.filters-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  padding: 16px;
+  width: 250px;
+  z-index: 1000;
+  display: none;
+}
+
+.filters-menu.active {
+  display: block;
+}
+
+.filter-option {
+  margin-bottom: 12px;
+}
+
+.filter-option:last-child {
+  margin-bottom: 0;
+}
+
+.filter-option label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+}
+
+.filter-option select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
