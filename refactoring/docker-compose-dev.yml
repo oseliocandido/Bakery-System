@@ -23,6 +23,7 @@ services:
     container_name: fast_api_dev
     build:
       context: .
+      dockerfile: fastapi.Dockerfile
       target: dev
     depends_on:
       - postgres
