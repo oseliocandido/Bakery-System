@@ -15,80 +15,229 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body>
-  <!-- Sidebar container - will be populated by template-loader.js -->
   <div id="sidebar-container"></div>
+  
+  <!-- Sidebar -->
   <script type="module">
     import templateLoader from '/components/commom/sidebar/sidebar.js';
-
-    // Initialize the template system
     document.addEventListener('DOMContentLoaded', () => {
       templateLoader.initializeLayout();
     });
   </script>
-  <!-- Content Area -->
+
   <div class="content">
-    <!-- Users Section Header with description -->
-    <div class="page-header">
-      <div class="page-title-section">
-        <h1 class="content-header">Gerenciamento de Funcionários</h1>
-        <p class="page-description">Visualize e gerencie todos os funcionários do sistema. Use os filtros para encontrar rapidamente usuários específicos.</p>
+
+    <div id="users-list-view">
+
+      <div class="page-header">
+        <div class="page-title-section">
+          <h1 class="content-header">Gerenciamento de Funcionários</h1>
+          <p class="page-description">Visualize e gerencie todos os funcionários do sistema. Use os filtros para encontrar rapidamente usuários específicos.</p>
+        </div>
       </div>
+
+      <div class="users-header">
+        <div class="user-count">
+          <h2>Funcionários <span id="user-count-badge">0</span></h2>
+        </div>
+
+        <div class="user-tools">
+
+          <div class="search-container">
+            <input type="text" id="user-search" class="search-input" placeholder="Buscar Funcionários">
+          </div>
+          
+          <div class="filters-dropdown">
+            <button class="filters-button" id="filters-button">
+              <i class="fas fa-filter"></i> Filtros
+            </button>
+            
+            <div class="filters-menu" id="filters-menu">
+              <div class="filter-option">
+                <label for="status-filter">Status</label>
+                <select id="status-filter">
+                  <option value="">Todos</option>
+                  <option value="Ativo">Ativo</option>
+                  <option value="Inativo">Inativo</option>
+                </select>
+              </div>
+              
+              <div class="filter-option">
+                <label for="role-filter">Cargo</label>
+                <select id="role-filter">
+                  <option value="">Todos</option>
+                  <!-- Will be populated dynamically -->
+                </select>
+              </div>
+            </div>
+          </div>
+          <button id="btn-create-user" class="add-user-button" type="button">
+            <i class="fas fa-plus"></i> Novo Funcionário
+          </button>
+        </div>
+      </div>
+      <script src="/modules/users/get_users.js" type="module"></script>
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Cargo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="employees-table-body">
+        </tbody>
+      </table>
     </div>
     
-    <!-- Users count and tools section -->
-    <div class="users-header">
-      <div class="user-count">
-        <h2>Funcionários <span id="user-count-badge">0</span></h2>
+    <!-- User Create View - Initially Hidden -->
+    <div id="user-create-view" style="display: none;">
+      <!-- Section Header -->
+      <div class="page-header">
+        <div class="page-title-section">
+          <h1 class="content-header">Criar Novo Funcionário</h1>
+          <p class="page-description">Adicione um novo funcionário ao sistema. Preencha todos os campos obrigatórios para criar um novo registro.</p>
+        </div>
       </div>
       
-      <div class="user-tools">
-        <div class="search-container">
-          <input type="text" id="user-search" class="search-input" placeholder="Buscar Funcionários">
-        </div>
-        
-        <div class="filters-dropdown">
-          <button class="filters-button" id="filters-button">
-            <i class="fas fa-filter"></i> Filtros
-          </button>
+      <!-- Create User Form -->
+      <div class="user-form">
+        <form id="create-user-form">
+          <div class="form-group">
+            <label for="numero_identificacao">Número de Identificação</label>
+            <input type="number" id="numero_identificacao" name="numero_identificacao" placeholder="Digite o número de ID" required>
+          </div>
           
-          <div class="filters-menu" id="filters-menu">
-            <div class="filter-option">
-              <label for="status-filter">Status</label>
-              <select id="status-filter">
-                <option value="">Todos</option>
-                <option value="Ativo">Ativo</option>
-                <option value="Inativo">Inativo</option>
+          <div class="form-group">
+            <label for="complete_name">Nome Completo</label>
+            <input type="text" id="complete_name" name="complete_name" placeholder="Digite o nome completo" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="date_nascimento">Data de Nascimento</label>
+              <input type="date" id="date_nascimento" name="date_nascimento" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="date_admissao">Data de Admissão</label>
+              <input type="date" id="date_admissao" name="date_admissao" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="role">Cargo</label>
+              <select id="role" name="role" required>
+                <option value="">Selecione um cargo</option>
+                <option value="Padeiro">Padeiro</option>
+                <option value="Auxiliar de Padeiro">Auxiliar de Padeiro</option>
+                <option value="Atendente de Caixa">Atendente de Caixa</option>
+                <option value="Cozinheira">Cozinheira</option>
+                <option value="Admin">Admin</option>
               </select>
             </div>
             
-            <div class="filter-option">
-              <label for="role-filter">Cargo</label>
-              <select id="role-filter">
-                <option value="">Todos</option>
-                <!-- Will be populated dynamically -->
-              </select>
+            <div class="form-group">
+              <label for="telephone_number">Telefone</label>
+              <input type="tel" id="telephone_number" name="telephone_number" placeholder="Digite o número de telefone" required>
             </div>
           </div>
-        </div>
+          
+          <div class="form-group">
+            <label for="observation">Observações</label>
+            <textarea id="observation" name="observation" rows="3" placeholder="Observações adicionais"></textarea>
+          </div>
+        </form>
       </div>
     </div>
-    <!-- Users table -->
-    <table class="user-table">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Nome</th>
-          <th>Telefone</th>
-          <th>Cargo</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="employees-table-body">
-        <script src="/modules/users/get_users.js" type="module"></script>
-      </tbody>
-    </table>
+
+    <!-- User Edit View - Initially Hidden -->
+    <div id="user-edit-view" style="display: none;">
+      <!-- Section Header -->
+      <div class="page-header">
+        <div class="page-title-section">
+          <h1 class="content-header">Editar Funcionário</h1>
+          <p class="page-description">Atualize as informações de um funcionário existente. Selecione um funcionário abaixo para começar.</p>
+        </div>
+      </div>
+      
+      <div id="edit-message-container"></div>
+      
+      <!-- User Selection -->
+      <div class="user-form">
+        <div class="form-group">
+          <label for="user-select">Selecione o Funcionário para Editar</label>
+          <select id="user-select" class="form-control">
+            <option value="">Selecione um funcionário</option>
+              <script src="/modules/users/user-edit.js" type="module"></script>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Edit User Form - Initially Hidden -->
+      <div class="user-form" id="edit-form-container" style="display: none;">
+        <form id="edit-user-form">
+          <input type="hidden" id="edit_id">
+          
+          <div class="form-group">
+            <label for="edit_complete_name">Nome Completo</label>
+            <input type="text" id="edit_complete_name" name="complete_name" placeholder="Digite o nome completo" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit_date_nascimento">Data de Nascimento</label>
+              <input type="date" id="edit_date_nascimento" name="date_nascimento" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="edit_date_admissao">Data de Admissão</label>
+              <input type="date" id="edit_date_admissao" name="date_admissao" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit_role">Cargo</label>
+              <select id="edit_role" name="role" required>
+                <option value="">Selecione um cargo</option>
+                <option value="Padeiro">Padeiro</option>
+                <option value="Auxiliar de Padeiro">Auxiliar de Padeiro</option>
+                <option value="Atendente de Caixa">Atendente de Caixa</option>
+                <option value="Cozinheira">Cozinheira</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="edit_telephone_number">Telefone</label>
+              <input type="tel" id="edit_telephone_number" name="telephone_number" placeholder="Digite o número de telefone" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="edit_status">Status</label>
+            <select id="edit_status" name="status" required>
+              <option value="Ativo">Ativo</option>
+              <option value="Inativo">Inativo</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="edit_observation">Observações</label>
+            <textarea id="edit_observation" name="observation" rows="3" placeholder="Observações adicionais"></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Atualizar</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <!-- Include the other scripts as modules -->
   <script src="/utils/search.js" type="module"></script>
 </body>
 </html>

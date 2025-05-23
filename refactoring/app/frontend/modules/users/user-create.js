@@ -3,19 +3,7 @@ import { showMessage } from '/utils/utils.js';
 // API base URL - adjusted to match your FastAPI backend running on port 4200 with /api prefix
 const API_BASE_URL = 'http://localhost:4200/api';
 
-// DOM Elements
-const createUserForm = document.getElementById('create-user-form');
-const messageContainer = document.getElementById('create-message-container');
 
-// Helper function for displaying messages
-function showMessage(message, isError = false) {
-  messageContainer.innerHTML = `<div class="message ${isError ? 'error' : 'success'}">${message}</div>`;
-  setTimeout(() => {
-    messageContainer.innerHTML = '';
-  }, 5000);
-}
-
-// Function to create a user
 async function createUser(userData) {
   try {
     const response = await fetch(`${API_BASE_URL}/users`, {
@@ -25,27 +13,28 @@ async function createUser(userData) {
       },
       body: JSON.stringify(userData),
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.detail || 'Failed to create user');
+      showMessage(errorData.detail || 'Failed to create user', false);
+      return null;
     }
-    
+
     const result = await response.json();
     showMessage('User created successfully!');
     createUserForm.reset();
-    
-    // Redirect to the users list after a short delay
-    setTimeout(() => {
-      window.location.href = 'user.html';
-    }, 2000);
-    
-    return result;
+
+    // Optionally, redirect or update the UI to reflect the new user
+    window.location.href = 'modules/users/user.html'; // Redirect to user list page
   } catch (error) {
     showMessage(`Error: ${error.message}`, true);
     return null;
   }
 }
+
+
+
+
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', () => {
