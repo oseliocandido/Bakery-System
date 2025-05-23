@@ -21,4 +21,8 @@ export function setupViewNavigation({navLinks}) {
       });
     }
   });
+  // Show the default view based on the current URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const viewType = urlParams.get('view') || 'list';
+  showView(navLinks, viewType);
 }

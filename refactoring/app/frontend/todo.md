@@ -50,8 +50,9 @@ ATTEDANCES
    - Show error messages se tiver algo errado
    - Se for algo mais ou menos ruim, tira com trim, lower, etc
    - Adicionar placeholders nos inputs pra deixar mais claro como tem que preencher
-- Adicionar favico
+- Adicionar favicon
 - Melhoras os buttoes e padronizar
+- Melhorar performance da navbar talvez tirando DOMcontent loaded ou preload, etc
 
 ### Code
 <footer>
