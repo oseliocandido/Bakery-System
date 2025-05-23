@@ -6,7 +6,6 @@
         <i class="fas fa-chevron-left"></i>
       </button>
     </div>
-    
     <ul class="sidebar-nav">
       <li class="section-title">Principal</li>
       <li class="sidebar-nav-item">
@@ -127,21 +126,3 @@
       </li>
     </ul>
   </div>
-  <script type="module">
-    import { setupViewNavigation } from '/components/commom/sidebar/views.js';
-    if (window.location.pathname.endsWith('/modules/users/user.html')) {
-      setupViewNavigation({
-        viewIds: {
-          list: 'users-list-view',
-          create: 'user-create-view',
-          edit: 'user-edit-view'
-        },
-        navLinks: [
-          { selector: '.submenu-link[href*="user.html?view=list"]', view: 'list' },
-          { selector: '.submenu-link[href*="user.html?view=edit"]', view: 'edit' },
-          { selector: '#btn-create-user', view: 'create' }
-        ],
-        defaultView: 'list'
-      });
-    }
-  </script>

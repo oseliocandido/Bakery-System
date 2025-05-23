@@ -1,39 +1,4 @@
-const viewIds = {
-  list: 'users-list-view',
-  create: 'user-create-view',
-  edit: 'user-edit-view'
-};
-
-function getViews() {
-  const result = {};
-  for (const [key, id] of Object.entries(viewIds)) {
-    result[key] = document.getElementById(id);
-  }
-  return result;
-}
-
-function showView(viewKey, url = '') {
-  const views = getViews();
-  Object.entries(views).forEach(([key, el]) => {
-    if (!el) return;
-    el.style.display = (key === viewKey) ? 'block' : 'none';
-  });
-  if (url) {
-    history.pushState(null, '', url);
-  }
-}
-
-function setupViewNavigation(navLinks) {
-  navLinks.forEach(({ selector, view }) => {
-    const el = document.querySelector(selector);
-    if (el) {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        showView(view, `/modules/users/user.html?view=${view}`);
-      });
-    }
-  });
-}
+import { setupViewNavigation } from '/components/commom/sidebar/views.js';
 
 const templateLoader = {
   async initializeLayout() {
@@ -59,26 +24,15 @@ const templateLoader = {
 
       // Setup view navigation for user module if on user.html
       if (window.location.pathname.endsWith('/modules/users/user.html')) {
-        // Wait for the main content to be available before setting up navigation
         setTimeout(() => {
-          setupViewNavigation([
-            { selector: '.submenu-link[href*="user.html?view=list"]', view: 'list' },
-            { selector: '.submenu-link[href*="user.html?view=edit"]', view: 'edit' },
-            { selector: '#btn-create-user', view: 'create' }
-          ]);
-          // Cancel button in edit view returns to list view
-          const cancelBtn = document.getElementById('cancel-edit');
-          if (cancelBtn) {
-            cancelBtn.addEventListener('click', (e) => {
-              e.preventDefault();
-              const views = getViews();
-              Object.entries(views).forEach(([key, el]) => {
-                if (!el) return;
-                el.style.display = (key === 'list') ? 'block' : 'none';
-              });
-              history.pushState(null, '', '/modules/users/user.html?view=list');
-            });
-          }
+          setupViewNavigation({
+
+            navLinks: [
+              { selector: '.submenu-link[href*="user.html?view=list"]', view_id: 'users-list-view', view_type: 'list' },
+              { selector: '#btn-create-user', view_id: 'user-create-view', view_type: 'create' },
+              { selector: '.submenu-link[href*="user.html?view=edit"]', view_id: 'user-edit-view', view_type: 'edit' }
+            ],
+          });
         }, 0);
       }
 

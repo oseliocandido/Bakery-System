@@ -50,7 +50,7 @@ ATTEDANCES
    - Show error messages se tiver algo errado
    - Se for algo mais ou menos ruim, tira com trim, lower, etc
    - Adicionar placeholders nos inputs pra deixar mais claro como tem que preencher
-   
+- Adicionar favico
 - Melhoras os buttoes e padronizar
 
 ### Code
