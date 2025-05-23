@@ -1,15 +1,17 @@
-// Helper functions for messages
+/**
+ * Show a message at the top of the body with success or error styling.
+ * @param {string} message - The message to display.
+ * @param {boolean} isError - If true, shows error styling; otherwise, success.
+ */
 export function showMessage(message, isError = false) {
-  const messageContainer = document.createElement('div');
-  messageContainer.className = `message ${isError ? 'error' : 'success'}`;
-  messageContainer.textContent = message;
-  
-  // Insert at the top of the content area
-  const contentArea = document.querySelector('.content');
-  contentArea.insertBefore(messageContainer, contentArea.firstChild);
-  
-  // Auto remove after 5 seconds
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `message ${isError ? 'error' : 'success'}`;
+  msgDiv.textContent = message;
+
+  // Insert at the top of the body (or change to another container if needed)
+  document.body.insertBefore(msgDiv, document.body.lastChild);
+
   setTimeout(() => {
-    messageContainer.remove();
+    msgDiv.remove();
   }, 5000);
 }

@@ -45,7 +45,6 @@ const templateLoader = {
     const sidebarContainer = document.getElementById('sidebar-container');
     if (!sidebarContainer) return;
     try {
-      // Fix: Update path to correctly point to the sidebar HTML file with correct folder name 'commom' not 'common'
       const response = await fetch('/components/commom/sidebar/sidebar.html');
 
       if (!response.ok) {
